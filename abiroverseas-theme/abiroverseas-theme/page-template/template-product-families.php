@@ -30,7 +30,6 @@ $ab_families = array(
                 <img src="<?php echo esc_url( get_theme_file_uri( '/assets/img/pellets-macro.jpg' ) ); ?>" alt="Close-up of polymer resin pellets" width="900" height="650" fetchpriority="high">
                 <span class="ab-products-art-tag">Materials · forms · applications</span>
                 <div class="ab-products-art-caption"><span class="ab-products-caption-dot" aria-hidden="true"></span><span><small>Start with the material</small><strong>Find the family that fits your brief.</strong></span></div>
-                <span class="ab-products-art-orbit" aria-hidden="true"></span>
             </div>
         </div>
     </section>

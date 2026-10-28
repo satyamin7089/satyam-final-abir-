@@ -21,7 +21,6 @@ get_header();
                 <img src="<?php echo esc_url( get_theme_file_uri( '/assets/img/virgin-vs-recycled.jpg' ) ); ?>" alt="Close-up of polymer resin material" width="900" height="650" fetchpriority="high">
                 <span class="ab-products-art-tag">Grades · processing · fit</span>
                 <div class="ab-products-art-caption"><span class="ab-products-caption-dot" aria-hidden="true"></span><span><small>Compare with context</small><strong>Start with your application and requirements.</strong></span></div>
-                <span class="ab-products-art-orbit" aria-hidden="true"></span>
             </div>
         </div>
     </section>

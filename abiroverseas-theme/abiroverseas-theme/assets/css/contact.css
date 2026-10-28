@@ -65,9 +65,7 @@
 .ab-contact-art-caption small { color: #087b76; font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .ab-contact-art-caption strong { font-size: 15px; line-height: 1.35; }
 .ab-contact-art-orbit {
-    position: absolute; z-index: 1; top: 42%; right: -48px; width: 155px; height: 155px;
-    border-radius: 50%; box-shadow: 0 0 0 1px rgba(255,255,255,.24), 0 0 0 20px rgba(255,255,255,.06), 0 0 0 42px rgba(255,255,255,.035);
-    pointer-events: none;
+    display: none !important;
 }
 .ab-contact-main { padding: clamp(58px,7vw,90px) 0 clamp(64px,8vw,100px); background: linear-gradient(180deg,#fff 0%,#fbfdfc 100%); }
 .ab-contact-intro { max-width: 720px; margin: 0 auto 42px; text-align: center; }
@@ -104,9 +102,27 @@
     transition: transform .22s ease, box-shadow .22s ease;
 }
 .ab-contact-detail:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(22,44,62,.06), 0 17px 30px rgba(22,44,62,.08); }
-.ab-contact-detail-icon { display: grid; flex: 0 0 42px; width: 42px; height: 42px; place-items: center; border-radius: 13px; background: #e1f1ed; color: var(--ab-teal,#008080); box-shadow: 0 4px 10px rgba(0,128,128,.08); }
-.ab-contact-detail-icon--orange { background: #fff0e2; color: #b65a09; }
-.ab-contact-detail-icon svg { width: 21px; height: 21px; }
+.ab-contact-detail-icon,
+.ab-contact-detail-icon--orange {
+    display: grid;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border-radius: 13px;
+    background: #e4f1ef;
+    color: var(--ab-teal, #008080);
+    box-shadow: 0 6px 14px rgba(17, 48, 56, .10), inset 0 1px 2px rgba(255, 255, 255, .92), inset 0 -2px 4px rgba(0, 128, 128, .08);
+}
+.ab-contact-detail-icon svg {
+    width: 21px;
+    height: 21px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
 .ab-contact-detail > span:last-child { display: grid; min-width: 0; gap: 4px; }
 .ab-contact-detail small { color: #718188; font-size: 11px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
 .ab-contact-detail strong { overflow-wrap: anywhere; color: var(--ab-ink,#17384a); font-size: 15px; line-height: 1.4; }

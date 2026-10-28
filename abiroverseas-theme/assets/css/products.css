@@ -168,15 +168,7 @@
 .ab-products-art-caption small { color: #087b76; font-size: 10px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
 .ab-products-art-caption strong { font-size: 15px; line-height: 1.35; }
 .ab-products-art-orbit {
-    position: absolute;
-    z-index: 1;
-    top: 40%;
-    right: -48px;
-    width: 155px;
-    height: 155px;
-    border-radius: 50%;
-    box-shadow: 0 0 0 1px rgba(255,255,255,.24), 0 0 0 20px rgba(255,255,255,.06), 0 0 0 42px rgba(255,255,255,.035);
-    pointer-events: none;
+    display: none !important;
 }
 .ab-products-catalog {
     padding: clamp(54px, 7vw, 88px) 0 clamp(65px, 8vw, 100px);

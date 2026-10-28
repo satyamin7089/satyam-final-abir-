@@ -2,6 +2,7 @@
 /** Shared document header and Appearance > Menus primary navigation. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 $ab_is_knowledge = is_singular( 'knowledge' ) || is_post_type_archive( 'knowledge' ) || is_tax( array( 'knowledge_hub', 'knowledge_material', 'knowledge_topic' ) );
+$ab_is_bhavik    = function_exists( 'ab_is_bhavik_page' ) && ab_is_bhavik_page();
 
 ?><!doctype html>
 <html <?php language_attributes(); ?>>
@@ -17,12 +18,22 @@ $ab_is_knowledge = is_singular( 'knowledge' ) || is_post_type_archive( 'knowledg
 <div class="ab-topbar" aria-label="Contact details and material price information">
   <div class="ab-wrap ab-topbar-inner">
     <div class="ab-contact-line">
-  <span>
-    <svg class="ab-icon" aria-hidden="true"><use href="#ab-icon-mail" /></svg>
-    Email: <a href="mailto:info@abiroverseas.com" class="ab-header-contact-link">info@abiroverseas.com</a>
-  </span><span><svg class="ab-icon" aria-hidden="true"><use href="#ab-icon-phone" /></svg>
-Phone: <a href="tel:+18565233366" class="ab-header-contact-link">+1 (856) 523 3366</a>
-</span></div>
+      <?php if ( $ab_is_bhavik ) : ?>
+        <span>
+          <svg class="ab-icon" aria-hidden="true"><use href="#ab-icon-mail" /></svg>
+          Email: <a href="mailto:info@bhavikenterprises.com" class="ab-header-contact-link">info@bhavikenterprises.com</a>
+        </span><span><svg class="ab-icon" aria-hidden="true"><use href="#ab-icon-phone" /></svg>
+          Phone: <a href="tel:+917007049478" class="ab-header-contact-link">+91 7007049478</a>
+        </span>
+      <?php else : ?>
+        <span>
+          <svg class="ab-icon" aria-hidden="true"><use href="#ab-icon-mail" /></svg>
+          Email: <a href="mailto:info@abiroverseas.com" class="ab-header-contact-link">info@abiroverseas.com</a>
+        </span><span><svg class="ab-icon" aria-hidden="true"><use href="#ab-icon-phone" /></svg>
+          Phone: <a href="tel:+18565233366" class="ab-header-contact-link">+1 (856) 523 3366</a>
+        </span>
+      <?php endif; ?>
+    </div>
     <div class="ab-ticker" aria-label="Indicative material information, not live prices">
       <span class="ab-ticker-label">Indicative · not live</span>
       <div class="ab-ticker-track"><div class="ab-ticker-items"><span class="ab-ticker-item"><b>HDPE</b><i class="ab-ticker-dot"></i><em>Quote-led</em></span><span class="ab-ticker-item"><b>Polypropylene</b><i class="ab-ticker-dot"></i><em>Enquiry-based</em></span><span class="ab-ticker-item"><b>Polyethylene</b><i class="ab-ticker-dot"></i><em>Confirm by grade</em></span><span class="ab-ticker-item"><b>HDPE</b><i class="ab-ticker-dot"></i><em>Quote-led</em></span><span class="ab-ticker-item"><b>Polypropylene</b><i class="ab-ticker-dot"></i><em>Enquiry-based</em></span><span class="ab-ticker-item"><b>Polyethylene</b><i class="ab-ticker-dot"></i><em>Confirm by grade</em></span></div></div>
@@ -31,10 +42,22 @@ Phone: <a href="tel:+18565233366" class="ab-header-contact-link">+1 (856) 523 33
 </div>
 <header class="ab-mainnav" id="site-header">
   <div class="ab-wrap ab-nav-inner">
-    <a class="ab-logo-slot" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="Abiroverseas home"><img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/10/ABIR-Logo.png' ) ); ?>" alt="Abiroverseas logo"></a>
+    <a class="ab-logo-slot" href="<?php echo esc_url( $ab_is_bhavik ? '#bv-hero' : home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( $ab_is_bhavik ? 'Back to top of page' : 'Abiroverseas home' ); ?>"><img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/10/ABIR-Logo.png' ) ); ?>" alt="Abiroverseas logo"></a>
     <button class="ab-nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-navigation"><span class="ab-menu-line"></span><span class="ab-menu-line"></span><span class="ab-menu-line"></span></button>
     <nav class="ab-nav-links" id="primary-navigation" aria-label="Main navigation">
-      <?php wp_nav_menu( array( 'theme_location' => 'primary', 'container' => false, 'menu_class' => 'ab-nav-menu', 'menu_id' => 'ab-primary-menu', 'fallback_cb' => 'ab_primary_menu_fallback', 'depth' => 3 ) ); ?>
+      <?php if ( $ab_is_bhavik ) : ?>
+        <ul id="ab-primary-menu" class="ab-nav-menu">
+          <li class="menu-item"><a href="#bv-hero">Home</a></li>
+          <li class="menu-item"><a href="#about">About Us</a></li>
+          <li class="menu-item"><a href="#products">Products</a></li>
+          <li class="menu-item"><a href="#industries">Industries</a></li>
+          <li class="menu-item"><a href="#the-way">Process</a></li>
+          <li class="menu-item"><a href="#faqs">FAQs</a></li>
+          <li class="menu-item ab-nav-quote"><a href="#quick-enquiry">Get a Custom Quote</a></li>
+        </ul>
+      <?php else : ?>
+        <?php wp_nav_menu( array( 'theme_location' => 'primary', 'container' => false, 'menu_class' => 'ab-nav-menu', 'menu_id' => 'ab-primary-menu', 'fallback_cb' => 'ab_primary_menu_fallback', 'depth' => 3 ) ); ?>
+      <?php endif; ?>
     </nav>
   </div>
 </header>
@@ -126,5 +149,27 @@ Phone: <a href="tel:+18565233366" class="ab-header-contact-link">+1 (856) 523 33
 <symbol id="ab-icon-leaf" viewBox="0 0 24 24">
       <path d="M5 20c0-10 7-15 15-15 0 10-5 16-15 15Z" />
       <path d="M5 20c3-7 7-10 12-11" />
+    </symbol>
+<symbol id="ab-icon-package" viewBox="0 0 24 24">
+      <path d="m12 3 8.5 4.7v8.6L12 21l-8.5-4.7V7.7L12 3Z" />
+      <path d="m3.5 7.7 8.5 4.7 8.5-4.7M12 12.4V21M7.8 5.3l8.4 4.7" />
+    </symbol>
+<symbol id="ab-icon-pipe" viewBox="0 0 24 24">
+      <ellipse cx="6.5" cy="14.5" rx="3" ry="4.5" />
+      <path d="M6.5 10h11c1.7 0 3 2 3 4.5S19.2 19 17.5 19h-11" />
+      <path d="M9.5 6h8c1.5 0 2.7 1.6 2.9 3.6" />
+    </symbol>
+<symbol id="ab-icon-mould" viewBox="0 0 24 24">
+      <rect x="4" y="4" width="16" height="6.5" rx="1.5" />
+      <rect x="4" y="13.5" width="16" height="6.5" rx="1.5" />
+      <path d="M9 10.5v3M15 10.5v3M12 2v2M12 20v2" />
+    </symbol>
+<symbol id="ab-icon-home-goods" viewBox="0 0 24 24">
+      <rect x="4" y="8" width="16" height="11" rx="2.5" />
+      <path d="M3 8h18M9 5h6a1.5 1.5 0 0 1 1.5 1.5V8h-9V6.5A1.5 1.5 0 0 1 9 5Zm1 7h4" />
+    </symbol>
+<symbol id="ab-icon-recycle" viewBox="0 0 24 24">
+      <path d="m7.5 4.8 3-1.8 3 5.2M4.3 14.5 2.5 11.4l5.2-3M16.8 19.5h-3.6l3-5.2" />
+      <path d="M10.5 3h3a2 2 0 0 1 1.7 1l2.3 4M3.2 12.2l1.8 3.1a2 2 0 0 0 1.7 1h4.1M20.8 12.2 19 15.3a2 2 0 0 1-1.7 1h-3.5" />
     </symbol>
 </svg>

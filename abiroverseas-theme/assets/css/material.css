@@ -295,6 +295,8 @@ p {
 }
 
 .ab-prod-hero-grid {
+    position: relative;
+    z-index: 2;
     display: grid;
     grid-template-columns: .95fr 1.05fr;
     gap: 48px;
@@ -1274,9 +1276,18 @@ p {
 
 .ab-support-layout {
     display: grid;
-    grid-template-columns: .8fr 1.2fr;
+    grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
     gap: 42px;
     align-items: center
+}
+
+.ab-support-copy {
+    order: 1
+}
+
+.ab-support-layout > div:last-child,
+.ab-support-layout > :not(.ab-support-copy) {
+    order: 2
 }
 
 .ab-support-copy h2 {
@@ -1728,14 +1739,13 @@ p {
         gap: 24px
     }
 
-    /* Industry contexts stay stacked: copy on top, cards below (see the
-       .ab-industry-layout comment above). */
-    .ab-industry-layout {
+    /* Industry contexts and technical support stay stacked on tablet portrait & mobile: copy on top, cards below. */
+    .ab-industry-layout,
+    .ab-support-layout {
         grid-template-columns: minmax(0, 1fr)
     }
 
-    .ab-selection-layout,
-    .ab-support-layout {
+    .ab-selection-layout {
         grid-template-columns: .8fr 1.2fr
     }
 

@@ -2834,6 +2834,8 @@ input[type="submit"],
 .ab-home-hero:after {
     content: "";
     position: absolute;
+    z-index: -1;
+    pointer-events: none;
     width: 540px;
     height: 540px;
     border: none;

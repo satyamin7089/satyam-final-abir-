@@ -34,7 +34,6 @@ if ( isset( $_GET['ab_enquiry'] ) && is_scalar( $_GET['ab_enquiry'] ) ) {
                 <img class="ab-contact-hero-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/10/Industrial-Resin-Pellets-and-Flowing-Waves.png' ) ); ?>" alt="Industrial resin pellets and flowing polymer forms" width="900" height="700" fetchpriority="high">
                 <span class="ab-contact-art-tag">Materials · forms · applications</span>
                 <div class="ab-contact-art-caption"><span class="ab-contact-caption-dot" aria-hidden="true"></span><span><small>Start with your requirement</small><strong>Find the right material conversation.</strong></span></div>
-                <span class="ab-contact-art-orbit" aria-hidden="true"></span>
             </div>
         </div>
     </section>
@@ -73,7 +72,7 @@ if ( isset( $_GET['ab_enquiry'] ) && is_scalar( $_GET['ab_enquiry'] ) ) {
                         <span><small>Email us</small><strong>info@abiroverseas.com</strong><em>For product and business enquiries</em></span>
                     </a>
                     <a class="ab-contact-detail" href="tel:+18565233366">
-                        <span class="ab-contact-detail-icon ab-contact-detail-icon--orange" aria-hidden="true">
+                        <span class="ab-contact-detail-icon" aria-hidden="true">
                             <svg viewBox="0 0 24 24" fill="none"><path d="M7.1 3.8H4.8c-.8 0-1.4.7-1.3 1.5.7 7.9 7.1 14.3 15 15 .8.1 1.5-.5 1.5-1.3v-2.3l-4.1-1-1.3 2a14.3 14.3 0 0 1-6.5-6.5l2-1.3-1-4.1z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </span>
                         <span><small>Call us</small><strong>+1 (856) 523 3366</strong><em>Speak with our team</em></span>
