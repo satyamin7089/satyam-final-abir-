@@ -303,6 +303,8 @@ p {
 .ab-about-hero:before {
     content: "";
     position: absolute;
+    z-index: -1;
+    pointer-events: none;
     width: 540px;
     height: 540px;
     border: none;
@@ -345,10 +347,9 @@ p {
 
 .ab-about-hero-grid {
     position: relative;
+    z-index: 2;
     display: grid;
-   
-    
-
+    align-items: center;
     grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
     gap: 48px;
 }
@@ -513,20 +514,31 @@ p {
 }
 
 .ab-story-pill {
-    padding: 7px 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
     border-radius: 999px;
-    background: var(--ab-mist);
+    background: var(--ab-white);
     color: #2c6764;
     font-size: 17px;
-    font-weight: 700;
+    font-weight: 600;
     border: none;
-    box-shadow: 0 2px 6px rgba(0, 128, 128, .08), 0 1px 2px rgba(0, 0, 0, .04)
+    box-shadow: 0 2px 8px rgba(0, 128, 128, .08), 0 1px 2px rgba(0, 0, 0, .04)
+}
+
+.ab-story-pill .ab-icon {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    color: var(--ab-teal)
 }
 
 /* Story visual — border removed, 3D depth */
 .ab-story-visual {
     position: relative;
-    min-height: 100%;
+    min-height: 440px;
+    height: 100%;
     border-radius: 26px;
     overflow: hidden;
     background: linear-gradient(145deg, #e2ecea, #f3f7f6 72%);
@@ -672,16 +684,11 @@ box-shadow: 0 1px 4px rgba(245, 130, 32, .15);
     box-shadow: 0 1px 4px rgba(245, 130, 32, .15)
 }
 
-.ab-pillar:nth-child(2) .ab-icon-box {
-    background: var(--ab-blue-mist);
-    color: var(--ab-blue);
-    box-shadow: 0 2px 8px rgba(29, 78, 159, .08)
-}
-
+.ab-pillar:nth-child(2) .ab-icon-box,
 .ab-pillar:nth-child(3) .ab-icon-box {
-    background: #fff0e2;
-    color: #b65a09;
-    box-shadow: 0 2px 8px rgba(245, 130, 32, .08)
+    background: #e4f1ef;
+    color: var(--ab-teal);
+    box-shadow: 0 7px 16px rgba(17, 48, 56, .12), inset 0 1px 2px rgba(255, 255, 255, .9), inset 0 -2px 4px rgba(0, 128, 128, .08)
 }
 
 /* ---- The way we work (timeline) ---- */

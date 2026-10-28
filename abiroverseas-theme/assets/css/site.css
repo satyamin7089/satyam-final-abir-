@@ -718,8 +718,8 @@ body { margin: 0; }
     overflow: hidden;
 }
 
-/* One decorative ring, same size and same bottom-left position everywhere. */
-.ab-home-slide::before,
+/* One decorative ring, strictly behind copy and never over banner/slider images. */
+.ab-home-slide:not(.ab-home-slide--background)::before,
 .ab-about-hero::before,
 .ab-contact-hero::before,
 .ab-prod-hero::before,
@@ -742,6 +742,27 @@ body { margin: 0; }
         0 0 0 42px rgba(0, 128, 128, .025),
         0 0 0 88px rgba(0, 128, 128, .018);
     pointer-events: none;
+}
+
+/* Remove inner circle overlays that previously sat directly on top of banner images. */
+.ab-contact-art-orbit,
+.ab-products-art-orbit {
+    display: none !important;
+}
+
+/* Ensure banner grids and slider/media frames always sit cleanly above hero backgrounds. */
+.ab-hero-grid,
+.ab-about-hero-grid,
+.ab-contact-hero-grid,
+.ab-prod-hero-grid,
+.ab-products-hero-grid,
+.ab-hero-art,
+.ab-about-hero-art,
+.ab-contact-hero-art,
+.ab-products-hero-art,
+.ab-prod-hero .ab-product-gallery {
+    position: relative;
+    z-index: 2;
 }
 
 /* The ring now lives on the slide itself, so the old hero-level ring is off.
@@ -875,6 +896,19 @@ body { margin: 0; }
 
     .ab-prod-hero .ab-product-gallery .ab-prod-art {
         min-height: var(--ab-banner-media-min);
+    }
+
+    /* Keep background ring anchored behind top copy area when media stacks below. */
+    .ab-home-slide:not(.ab-home-slide--background)::before,
+    .ab-about-hero::before,
+    .ab-contact-hero::before,
+    .ab-prod-hero::before,
+    .ab-products-page .ab-products-hero::before,
+    .kh-hero::before,
+    .kh-article-hero::before {
+        top: -250px;
+        bottom: auto;
+        left: -220px;
     }
 }
 
@@ -1247,6 +1281,7 @@ body { margin: 0; }
 
     .ab-credibility-visual,
     .ab-story-visual,
+    .ab-reach-visual,
     .ab-promise-list,
     .ab-grade-list,
     .ab-enquiry-options,
@@ -1257,7 +1292,16 @@ body { margin: 0; }
     .ab-checklist,
     .ab-support-cardgrid,
     .ab-contact-form,
-    .ab-faq-list {
+    .ab-faq-list,
+    .ab-faq-accordion,
+    .ab-support-layout > div:last-child,
+    .ab-support-layout > :not(.ab-support-copy),
+    .ab-industry-layout > div:last-child,
+    .ab-industry-layout > :not(.ab-industry-copy),
+    .ab-selection-layout > div:last-child,
+    .ab-selection-layout > :not(.ab-selection-copy),
+    .ab-grade-method-grid > div:last-child,
+    .ab-grade-method-grid > :not(.ab-grade-panel) {
         order: 2;
     }
 
@@ -1287,46 +1331,44 @@ body { margin: 0; }
 
 
 /* =========================================================================
-   CONTACT CHANNELS
+   CONTACT CHANNELS & ICON BOX CONSISTENCY
    -------------------------------------------------------------------------
-   Email, phone and WhatsApp share the orange accent used by the buttons.
+   Topbar and footer keep the orange accent; contact section icon boxes and
+   page icon boxes share the unified theme teal (#008080 on #e4f1ef).
    ========================================================================= */
 
 .ab-topbar .ab-contact-line .ab-icon,
-.ab-footer-contact .ab-icon,
-.ab-contact-hero-meta .ab-contact-meta-mark {
+.ab-footer-contact .ab-icon {
     color: #f58220;
 }
 
-.ab-contact-hero-meta .ab-contact-meta-mark {
-    background: #fff1e6;
-    box-shadow: 0 4px 10px rgba(245, 130, 32, .12);
-}
-
-/* WhatsApp channel tile in the contact banner (sits after "Call our team").
-   WhatsApp keeps its own green accent; email and phone use the orange one. */
-.ab-contact-hero-meta .ab-contact-meta-mark--whatsapp {
-    background: #e9f9ef;
-    color: #1eb257;
-    box-shadow: 0 4px 10px rgba(30, 178, 87, .14);
+.ab-contact-hero-meta .ab-contact-meta-mark,
+.ab-contact-hero-meta .ab-contact-meta-mark--orange,
+.ab-contact-hero-meta .ab-contact-meta-mark--whatsapp,
+.ab-contact-detail-icon,
+.ab-contact-detail-icon--orange {
+    background: #e4f1ef;
+    color: var(--ab-teal, #008080);
+    box-shadow: 0 6px 14px rgba(17, 48, 56, .10), inset 0 1px 2px rgba(255, 255, 255, .92), inset 0 -2px 4px rgba(0, 128, 128, .08);
 }
 
 .ab-contact-hero-meta .ab-contact-meta-mark--whatsapp .ab-icon {
     width: 19px;
     height: 19px;
-    color: #1eb257;
-    stroke-width: 1.6;
+    color: var(--ab-teal, #008080);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
 }
 
 .ab-contact-hero-meta > a.ab-contact-meta-item--whatsapp:hover .ab-contact-meta-mark--whatsapp {
-    background: #d8f4e3;
+    background: #d8ece8;
 }
 
 .ab-footer-contact .ab-footer-whatsapp {
     color: #c0cdd0;
     text-decoration: none;
 }
-
 
 /* WhatsApp keeps its own green accent in the footer contact list. */
 .ab-footer-contact .ab-footer-whatsapp-line .ab-icon {
@@ -2081,3 +2123,752 @@ body { margin: 0; }
 .ab-promise-grid > .ab-promise-list {
     margin-top: 0;
 }
+
+
+/* =========================================================================
+   BHAVIK ENTERPRISES & SHARED CONSISTENCY SYSTEM
+   -------------------------------------------------------------------------
+   - Smooth in-page anchor navigation & sticky header offset
+   - Unified icon box color across Contact Us & Bhavik Enterprises
+   - Borderless 3D sculptural image cards for "Industries we serve"
+   - Strict typography scale: card headings 22px, all body & FAQ text 17px
+   - Light heading color on dark CTA & process sections
+   - Responsive & touch alignment across Desktop, Tablet Landscape,
+     Tablet Portrait, and Mobile
+   ========================================================================= */
+
+html {
+    scroll-behavior: smooth;
+}
+
+#bv-hero,
+#why-bhavik,
+#about,
+#products,
+#industries,
+#the-way,
+#faqs,
+#quick-enquiry,
+#bhavik-enquiry-form {
+    scroll-margin-top: calc(var(--ab-live-nav-h, var(--ab-nav-h, 82px)) + 18px);
+}
+
+/* Center eyebrow when Contact Us intro is centered on desktop */
+@media (min-width: 1025px) {
+    .ab-contact-page:not(.ab-bhavik-page) .ab-contact-intro > .ab-eyebrow {
+        margin-inline: auto;
+    }
+}
+
+/* Preserve outline button appearance inside .ab-contact-page */
+.ab-contact-page .ab-btn.ab-btn--outline {
+    background: #ffffff;
+    color: var(--ab-blue, #1d4e9f);
+    box-shadow: 0 4px 14px rgba(22, 44, 62, .08), inset 0 1px 0 #ffffff;
+}
+
+.ab-contact-page .ab-btn.ab-btn--outline:hover {
+    background: #eff5fb;
+    color: var(--ab-blue, #1d4e9f);
+    box-shadow: 0 8px 20px rgba(22, 44, 62, .12), inset 0 1px 0 #ffffff;
+}
+
+/* Unified SVG stroke rendering inside all icon boxes */
+.ab-bhavik-page .ab-icon,
+.ab-contact-detail-icon .ab-icon,
+.ab-contact-detail-icon svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.ab-bhavik-page .ab-icon-box,
+.ab-bhavik-page .ab-pillar .ab-icon-box,
+.ab-bhavik-page .ab-pillar:nth-child(2) .ab-icon-box,
+.ab-bhavik-page .ab-pillar:nth-child(3) .ab-icon-box,
+.ab-bhavik-page .ab-contact-detail-icon,
+.ab-bhavik-page .ab-contact-detail-icon--orange {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    border-radius: 14px;
+    border: 0;
+    background: linear-gradient(145deg, #ecf6f4 0%, #dfefec 100%);
+    color: var(--ab-teal, #008080);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 7px 16px rgba(17, 48, 56, .11),
+        inset 0 1px 2px rgba(255, 255, 255, .95),
+        inset 0 -2px 4px rgba(0, 128, 128, .08);
+}
+
+.ab-bhavik-page .ab-icon-box .ab-icon,
+.ab-bhavik-page .ab-contact-detail-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Section heading & fluid H1/H2 scale on Bhavik (prevents fixed 60px/52px overflow) */
+.ab-bhavik-page h1 {
+    font-size: clamp(38px, 4.35vw, 58px);
+    line-height: 1.08;
+    letter-spacing: -.03em;
+    color: var(--ab-ink, #142334);
+    margin: 0 0 18px;
+}
+
+.ab-bhavik-page h2 {
+    font-size: clamp(30px, 3.45vw, 48px);
+    line-height: 1.12;
+    letter-spacing: -.028em;
+    color: var(--ab-ink, #142334);
+    margin: 0 0 16px;
+}
+
+/* Eyebrow consistency across light and dark sections */
+.ab-bhavik-page .ab-eyebrow {
+    margin-bottom: 12px;
+    color: var(--ab-teal, #008080);
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+}
+
+.ab-bhavik-page .ab-way-section .ab-eyebrow,
+.ab-bhavik-page .ab-final-cta .ab-eyebrow {
+    color: #a8ded6;
+}
+
+/* Light theme heading & text colors on dark sections (How We Work + Final CTA) */
+.ab-bhavik-page .ab-way-section h2,
+.ab-bhavik-page .ab-final-cta h2,
+.ab-contact-page .ab-final-cta h2 {
+    color: #ffffff;
+}
+
+.ab-bhavik-page .ab-final-cta {
+    padding: var(--ab-section-pad, 88px) 0;
+    background: radial-gradient(ellipse at 18% 20%, rgba(168, 222, 214, .14), transparent 46%),
+        linear-gradient(112deg, #102a3d 0%, #124e60 64%, #0f6f72 100%);
+}
+
+.ab-bhavik-page .ab-final-inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) auto;
+    gap: 36px;
+    align-items: center;
+}
+
+.ab-bhavik-page .ab-final-copy {
+    max-width: 720px;
+}
+
+.ab-bhavik-page .ab-final-copy h2 {
+    margin: 0 0 14px;
+    color: #ffffff;
+}
+
+.ab-bhavik-page .ab-final-copy p {
+    margin: 0;
+    color: #e3f1f2;
+    font-size: 17px;
+    line-height: 1.65;
+}
+
+.ab-bhavik-page .ab-final-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+}
+
+/* Strict card heading = 22px across all cards on Bhavik */
+.ab-bhavik-page.ab-contact-page .ab-pillar h3,
+.ab-bhavik-page.ab-contact-page .ab-why-card h3,
+.ab-bhavik-page.ab-contact-page .ab-bv-ind-card h3,
+.ab-bhavik-page.ab-contact-page .ab-way-item h3,
+.ab-bhavik-page.ab-contact-page .ab-faq-help-title,
+.ab-bhavik-page.ab-contact-page .ab-contact-aside-heading h3,
+.ab-bhavik-page.ab-contact-page .ab-contact-form h3 {
+    font-size: 22px;
+    line-height: 1.28;
+    font-weight: 700;
+    letter-spacing: -.018em;
+    margin: 0 0 10px;
+    color: var(--ab-ink, #142334);
+}
+
+.ab-bhavik-page.ab-contact-page .ab-way-item h3 {
+    color: #ffffff;
+}
+
+/* Strict body, card, list, form & FAQ font size = 17px */
+.ab-bhavik-page.ab-contact-page p,
+.ab-bhavik-page.ab-contact-page li,
+.ab-bhavik-page.ab-contact-page .lead,
+.ab-bhavik-page.ab-contact-page .ab-lead,
+.ab-bhavik-page.ab-contact-page .ab-pillar p,
+.ab-bhavik-page.ab-contact-page .ab-pillar ul li,
+.ab-bhavik-page.ab-contact-page .ab-story-copy p,
+.ab-bhavik-page.ab-contact-page .ab-story-pill,
+.ab-bhavik-page.ab-contact-page .ab-story-badge,
+.ab-bhavik-page.ab-contact-page .ab-story-badge strong,
+.ab-bhavik-page.ab-contact-page .ab-why-card p,
+.ab-bhavik-page.ab-contact-page .ab-link,
+.ab-bhavik-page.ab-contact-page .ab-bv-ind-card p,
+.ab-bhavik-page.ab-contact-page .ab-way-item p,
+.ab-bhavik-page.ab-contact-page .ab-faq-side > p,
+.ab-bhavik-page.ab-contact-page .ab-faq-help-sub,
+.ab-bhavik-page.ab-contact-page .ab-faq-help-link,
+.ab-bhavik-page.ab-contact-page .ab-faq-q,
+.ab-bhavik-page.ab-contact-page .ab-faq-body,
+.ab-bhavik-page.ab-contact-page .ab-faq-body p,
+.ab-bhavik-page.ab-contact-page .ab-contact-aside-heading p,
+.ab-bhavik-page.ab-contact-page .ab-contact-detail strong,
+.ab-bhavik-page.ab-contact-page .ab-contact-aside-note p,
+.ab-bhavik-page.ab-contact-page .ab-contact-form .ab-contact-form-heading > p,
+.ab-bhavik-page.ab-contact-page .ab-contact-form .ab-field label,
+.ab-bhavik-page.ab-contact-page .ab-contact-form .ab-field input,
+.ab-bhavik-page.ab-contact-page .ab-contact-form .ab-field select,
+.ab-bhavik-page.ab-contact-page .ab-contact-form .ab-field textarea,
+.ab-bhavik-page.ab-contact-page .ab-btn,
+.ab-bhavik-page.ab-contact-page .ab-contact-form .ab-contact-submit {
+    font-size: 17px;
+}
+
+/* Head rows & intro gapping fixes */
+.ab-bhavik-page .ab-head-row,
+.ab-bhavik-page .ab-way-intro {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 28px;
+    margin-bottom: var(--ab-rhythm-head, 42px);
+}
+
+.ab-bhavik-page .ab-head-row > .ab-section-head,
+.ab-bhavik-page .ab-way-intro > .ab-section-head {
+    margin-bottom: 0;
+}
+
+.ab-bhavik-page .ab-head-row > .ab-btn,
+.ab-bhavik-page .ab-way-intro > .ab-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+/* Story section alignment */
+.ab-bhavik-page .ab-story {
+    display: grid;
+    grid-template-columns: minmax(0, .94fr) minmax(0, 1.06fr);
+    gap: 52px;
+    align-items: center;
+}
+
+.ab-bhavik-page .ab-story-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* Product cards refinement */
+.ab-bhavik-page .ab-why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 26px;
+}
+
+.ab-bhavik-page .ab-why-card {
+    display: flex;
+    flex-direction: column;
+    padding: 28px 26px;
+    border: 0;
+    border-radius: 22px;
+    background: linear-gradient(165deg, #ffffff 0%, #f9fcfb 100%);
+    box-shadow: 0 2px 4px rgba(16, 38, 56, .04),
+        0 12px 26px -6px rgba(16, 38, 56, .08),
+        0 24px 48px -12px rgba(16, 38, 56, .08),
+        inset 0 1px 0 rgba(255, 255, 255, .96);
+}
+
+.ab-bhavik-page .ab-bv-product-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.ab-bhavik-page .ab-why-card .ab-why-tag {
+    margin: 0;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #eef6f5;
+    color: var(--ab-teal, #008080);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    line-height: 1.3;
+    text-align: right;
+}
+
+.ab-bhavik-page .ab-why-card p {
+    margin: 0 0 18px;
+    color: var(--ab-muted, #536572);
+    line-height: 1.62;
+    flex: 1;
+}
+
+.ab-bhavik-page .ab-why-card .ab-link {
+    margin-top: auto;
+}
+
+/* =========================================================================
+   INDUSTRIES WE SERVE — ULTRA-PREMIUM 3D BORDERLESS IMAGE CARDS
+   ========================================================================= */
+
+.ab-bv-ind-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    align-items: stretch;
+}
+
+.ab-bv-ind-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 14px 26px;
+    border: 0 !important;
+    border-radius: 26px;
+    background: linear-gradient(165deg, #ffffff 0%, #fafdfd 58%, #eff6f5 100%);
+    box-shadow: 0 2px 5px rgba(16, 38, 56, .04),
+        0 14px 28px -6px rgba(16, 38, 56, .10),
+        0 32px 62px -14px rgba(13, 62, 68, .16),
+        inset 0 1px 0 rgba(255, 255, 255, .98),
+        inset 0 -3px 6px rgba(0, 128, 128, .05);
+    transition: transform .34s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .34s cubic-bezier(.22, 1, .36, 1);
+    transform: translateZ(0);
+}
+
+.ab-bv-ind-media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    border: 0 !important;
+    border-radius: 18px;
+    overflow: hidden;
+    background: linear-gradient(140deg, #102a3d, #0f5666);
+    box-shadow: 0 14px 28px -8px rgba(13, 44, 58, .28),
+        0 4px 10px rgba(13, 44, 58, .12);
+    isolation: isolate;
+}
+
+.ab-bv-ind-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg,
+        rgba(12, 34, 48, .04) 0%,
+        rgba(12, 34, 48, 0) 44%,
+        rgba(12, 34, 48, .44) 100%);
+    pointer-events: none;
+}
+
+.ab-bv-ind-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform .55s cubic-bezier(.22, 1, .36, 1);
+}
+
+.ab-bv-ind-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    padding: 6px 13px;
+    border: 0 !important;
+    border-radius: 999px;
+    background: rgba(16, 38, 56, .66);
+    color: #eef9f7;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 6px 16px rgba(10, 26, 38, .24),
+        inset 0 1px 0 rgba(255, 255, 255, .22);
+}
+
+.ab-bv-ind-body {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0 12px;
+}
+
+.ab-bhavik-page .ab-bv-ind-icon {
+    margin-top: -24px;
+    margin-bottom: 14px;
+    background: linear-gradient(145deg, #ffffff 0%, #e4f2f0 100%);
+    box-shadow: 0 10px 24px rgba(14, 45, 57, .18),
+        0 3px 7px rgba(14, 45, 57, .09),
+        inset 0 1px 2px #ffffff;
+    transition: transform .34s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .34s cubic-bezier(.22, 1, .36, 1);
+}
+
+.ab-bv-ind-body p {
+    margin: 0;
+    color: var(--ab-muted, #536572);
+    line-height: 1.6;
+}
+
+@media (hover: hover) {
+    .ab-bv-ind-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 6px 12px rgba(16, 38, 56, .06),
+            0 22px 44px -8px rgba(16, 38, 56, .14),
+            0 40px 76px -14px rgba(0, 128, 128, .20),
+            inset 0 1px 0 #ffffff;
+    }
+
+    .ab-bv-ind-card:hover .ab-bv-ind-media img {
+        transform: scale(1.06);
+    }
+
+    .ab-bv-ind-card:hover .ab-bv-ind-icon {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 28px rgba(0, 128, 128, .22),
+            0 4px 10px rgba(14, 45, 57, .10),
+            inset 0 1px 2px #ffffff;
+    }
+}
+
+/* How We Work step cards alignment */
+.ab-bhavik-page .ab-way-grid {
+    margin-top: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.ab-bhavik-page .ab-way-item {
+    padding: 26px 24px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, .055);
+    box-shadow: 0 12px 28px rgba(6, 18, 28, .22),
+        inset 0 1px 0 rgba(255, 255, 255, .10);
+}
+
+.ab-bhavik-page .ab-way-item p {
+    max-width: none;
+    margin: 0;
+    color: #c8dadf;
+    line-height: 1.6;
+}
+
+/* FAQ consistency (17px questions & answers, crisp accordion alignment) */
+.ab-bhavik-page .ab-faq-grid {
+    display: grid;
+    grid-template-columns: minmax(300px, .82fr) minmax(0, 1.18fr);
+    gap: clamp(32px, 4vw, 54px);
+    align-items: start;
+}
+
+.ab-bhavik-page .ab-faq-category-tag {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    margin-bottom: 4px;
+}
+
+.ab-bhavik-page .ab-faq-q {
+    font-size: 17px !important;
+    font-weight: 600;
+    color: var(--ab-ink, #142334);
+    line-height: 1.45;
+    margin: 0;
+}
+
+.ab-bhavik-page .ab-faq-body,
+.ab-bhavik-page .ab-faq-body p {
+    font-size: 17px !important;
+    line-height: 1.65;
+    color: var(--ab-muted, #536572);
+}
+
+.ab-bhavik-page .ab-faq-summary {
+    min-height: 56px;
+    align-items: center;
+    touch-action: manipulation;
+}
+
+.ab-bhavik-page .ab-faq-help-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 28px;
+    padding: 24px;
+    border: 0;
+    border-radius: 20px;
+    background: linear-gradient(155deg, #f3faf8 0%, #e7f3f1 100%);
+    box-shadow: 0 10px 26px rgba(16, 44, 56, .08), inset 0 1px 0 #ffffff;
+}
+
+.ab-bhavik-page .ab-faq-help-sub {
+    margin: 0 0 12px;
+    color: var(--ab-muted, #536572);
+    line-height: 1.55;
+}
+
+.ab-bhavik-page .ab-faq-help-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--ab-teal, #008080);
+}
+
+/* Contact section alignment & form polish on Bhavik */
+.ab-bhavik-page .ab-contact-intro {
+    max-width: 760px;
+    margin: 0 0 var(--ab-rhythm-head, 42px);
+    text-align: left;
+}
+
+.ab-bhavik-page .ab-contact-intro > p {
+    max-width: 660px;
+    margin: 14px 0 0;
+    color: var(--ab-muted, #536572);
+}
+
+.ab-bhavik-page .ab-contact-layout {
+    display: grid;
+    grid-template-columns: minmax(340px, .88fr) minmax(0, 1.12fr);
+    gap: 32px;
+    align-items: start;
+}
+
+.ab-bhavik-page .ab-contact-aside {
+    padding: 28px;
+    border-radius: 24px;
+}
+
+.ab-bhavik-page .ab-bv-contact-details {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.ab-bhavik-page .ab-contact-detail {
+    margin: 0;
+    padding: 15px 16px;
+    align-items: flex-start;
+    gap: 14px;
+    touch-action: manipulation;
+}
+
+.ab-bhavik-page .ab-contact-detail small {
+    font-size: 12px;
+    letter-spacing: .09em;
+}
+
+.ab-bhavik-page .ab-contact-detail em {
+    font-size: 14px;
+    color: #63757d;
+}
+
+.ab-bhavik-page .ab-contact-form {
+    padding: 32px;
+    border-radius: 24px;
+}
+
+.ab-bhavik-page .ab-contact-form .ab-field input,
+.ab-bhavik-page .ab-contact-form .ab-field select,
+.ab-bhavik-page .ab-contact-form .ab-field textarea {
+    min-height: 52px;
+    padding: 13px 15px;
+    font-size: 17px;
+}
+
+.ab-bhavik-page .ab-contact-form .ab-field textarea {
+    min-height: 136px;
+}
+
+.ab-bhavik-page .ab-btn,
+.ab-bhavik-page .ab-contact-submit {
+    min-height: 52px;
+    touch-action: manipulation;
+}
+
+/* =========================================================================
+   RESPONSIVE BREAKPOINTS — TABLET LANDSCAPE, TABLET PORTRAIT & MOBILE
+   ========================================================================= */
+
+/* Tablet Landscape (1025px – 1180px) */
+@media (max-width: 1180px) {
+    .ab-bhavik-page .ab-pillars {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+    }
+
+    .ab-bhavik-page .ab-way-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+    }
+
+    .ab-bhavik-page .ab-why-grid,
+    .ab-bv-ind-grid {
+        gap: 22px;
+    }
+
+    .ab-bhavik-page .ab-story {
+        gap: 36px;
+    }
+}
+
+/* Tablet Portrait & Below (<= 1024px) */
+@media (max-width: 1024px) {
+    .ab-bhavik-page .ab-story,
+    .ab-bhavik-page .ab-faq-grid,
+    .ab-bhavik-page .ab-contact-layout,
+    .ab-bhavik-page .ab-final-inner {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 30px;
+    }
+
+    .ab-bhavik-page .ab-story-copy,
+    .ab-bhavik-page .ab-faq-side,
+    .ab-bhavik-page .ab-contact-aside {
+        order: 1;
+    }
+
+    .ab-bhavik-page .ab-story-visual,
+    .ab-bhavik-page .ab-faq-accordion,
+    .ab-bhavik-page .ab-contact-form {
+        order: 2;
+    }
+
+    .ab-bhavik-page .ab-story-visual {
+        min-height: 360px;
+    }
+
+    .ab-bhavik-page .ab-head-row,
+    .ab-bhavik-page .ab-way-intro {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .ab-bhavik-page .ab-why-grid,
+    .ab-bv-ind-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+    }
+
+    /* Two-column contact cards on tablet portrait so the aside stays compact */
+    .ab-bhavik-page .ab-bv-contact-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .ab-bhavik-page .ab-contact-detail--full {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Mobile (<= 640px) */
+@media (max-width: 640px) {
+    .ab-bhavik-page h1 {
+        font-size: clamp(32px, 8.2vw, 40px);
+    }
+
+    .ab-bhavik-page h2 {
+        font-size: clamp(27px, 7vw, 34px);
+    }
+
+    .ab-bhavik-page .ab-pillars,
+    .ab-bhavik-page .ab-why-grid,
+    .ab-bv-ind-grid,
+    .ab-bhavik-page .ab-way-grid,
+    .ab-bhavik-page .ab-bv-contact-details,
+    .ab-bhavik-page .ab-contact-form .ab-form-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+
+    .ab-bhavik-page .ab-pillar,
+    .ab-bhavik-page .ab-why-card,
+    .ab-bhavik-page .ab-way-item,
+    .ab-bhavik-page .ab-contact-aside,
+    .ab-bhavik-page .ab-contact-form {
+        padding: 22px 20px;
+    }
+
+    .ab-bv-ind-card {
+        padding: 12px 12px 22px;
+        border-radius: 22px;
+    }
+
+    .ab-bhavik-page .ab-bv-product-top {
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+
+    .ab-bhavik-page .ab-why-card .ab-why-tag {
+        text-align: left;
+    }
+
+    .ab-bhavik-page .ab-story-visual {
+        min-height: 270px;
+    }
+
+    .ab-bhavik-page .ab-story-pills {
+        gap: 10px;
+    }
+
+    .ab-bhavik-page .ab-story-pill {
+        width: 100%;
+        justify-content: flex-start;
+        border-radius: 14px;
+        padding: 10px 14px;
+    }
+
+    .ab-bhavik-page .ab-faq-help-card {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .ab-bhavik-page .ab-about-hero-actions,
+    .ab-bhavik-page .ab-final-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .ab-bhavik-page .ab-about-hero-actions .ab-btn,
+    .ab-bhavik-page .ab-final-actions .ab-btn,
+    .ab-bhavik-page .ab-head-row > .ab-btn,
+    .ab-bhavik-page .ab-way-intro > .ab-btn,
+    .ab-bhavik-page .ab-contact-submit {
+        width: 100%;
+        justify-content: center;
+    }
+}
+

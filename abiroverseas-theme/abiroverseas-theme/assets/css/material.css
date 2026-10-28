@@ -295,6 +295,8 @@ p {
 }
 
 .ab-prod-hero-grid {
+    position: relative;
+    z-index: 2;
     display: grid;
     grid-template-columns: .95fr 1.05fr;
     gap: 48px;
@@ -874,9 +876,7 @@ p {
     background: linear-gradient(112deg, #123247, #155b6b 75%, #157d79);
     color: #fff;
     position: relative;
-    /* `clip`, not `hidden`: this band holds a sticky copy column, and an
-       ancestor with a scrolling box would stop it from sticking. */
-    overflow: clip
+    overflow: hidden
 }
 
 .ab-primary-enquiry:after {
@@ -897,17 +897,7 @@ p {
     display: grid;
     grid-template-columns: .82fr 1.18fr;
     gap: 50px;
-    /* Top-aligned so the copy can stay put while the form scrolls. */
-    align-items: start
-}
-
-/* The enquiry copy stays in view for the whole form. The offset clears the
-   sticky main navigation plus the sticky material section bar, which is the
-   same expression the in-page anchors use for their scroll margin. */
-.ab-primary-copy {
-    position: sticky;
-    top: calc(var(--ab-live-nav-h, var(--ab-nav-h)) + var(--ab-live-subnav-h, 60px) + 22px);
-    align-self: start
+    align-items: center
 }
 
 .ab-primary-copy .ab-eyebrow {
@@ -1286,19 +1276,17 @@ p {
 
 .ab-support-layout {
     display: grid;
-    /* One column at every breakpoint: the heading, paragraph and link form one
-       block on top and the support cards follow underneath. */
-    grid-template-columns: minmax(0, 1fr);
-    gap: 30px;
-    align-items: start
+    grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+    gap: 42px;
+    align-items: center
 }
 
 .ab-support-copy {
-    order: 1;
-    max-width: 780px
+    order: 1
 }
 
-.ab-support-layout > div:last-child {
+.ab-support-layout > div:last-child,
+.ab-support-layout > :not(.ab-support-copy) {
     order: 2
 }
 
@@ -1751,20 +1739,14 @@ p {
         gap: 24px
     }
 
-    /* Industry contexts stay stacked: copy on top, cards below (see the
-       .ab-industry-layout comment above). */
-    .ab-industry-layout {
+    /* Industry contexts and technical support stay stacked on tablet portrait & mobile: copy on top, cards below. */
+    .ab-industry-layout,
+    .ab-support-layout {
         grid-template-columns: minmax(0, 1fr)
     }
 
     .ab-selection-layout {
         grid-template-columns: .8fr 1.2fr
-    }
-
-    /* Technical & commercial support stays stacked on tablet (see the
-       .ab-support-layout comment above). */
-    .ab-support-layout {
-        grid-template-columns: minmax(0, 1fr)
     }
 
     .ab-secondary-card {
@@ -1987,11 +1969,6 @@ p {
     .ab-primary-layout {
         grid-template-columns: 1fr;
         gap: 22px
-    }
-
-    /* Single column on phones: nothing to scroll past, so no sticky copy. */
-    .ab-primary-copy {
-        position: static
     }
 
     .ab-primary-copy h2 {

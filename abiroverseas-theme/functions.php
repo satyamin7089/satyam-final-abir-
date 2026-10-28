@@ -2,7 +2,23 @@
 /** Abiroverseas — WordPress theme functions. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'AB_THEME_VERSION', '1.5.0' );
+define( 'AB_THEME_VERSION', '1.5.2' );
+
+/**
+ * Determine whether the current request renders the Bhavik Enterprises page.
+ */
+function ab_is_bhavik_page() {
+    if ( ! is_page() ) {
+        return false;
+    }
+    $page_id  = get_queried_object_id();
+    $slug     = $page_id ? get_post_field( 'post_name', $page_id ) : '';
+    $template = $page_id ? get_page_template_slug( $page_id ) : '';
+
+    return 'bhavik-enterprises' === $slug
+        || in_array( $template, array( 'page-template/template-bhavik-enterprises.php', 'page-templates/template-bhavik-enterprises.php' ), true )
+        || is_page_template( array( 'page-template/template-bhavik-enterprises.php', 'page-templates/template-bhavik-enterprises.php' ) );
+}
 
 add_action( 'after_setup_theme', 'ab_theme_setup' );
 function ab_theme_setup() {
@@ -67,29 +83,53 @@ function ab_enqueue_assets() {
         $slug = get_post_field( 'post_name', $page_id );
         $template = get_page_template_slug( $page_id );
 
-        if ( is_front_page() || 'home' === $slug || 'page-templates/template-home.php' === $template ) {
+        if ( is_front_page() || 'home' === $slug || in_array( $template, array( 'page-template/template-home.php', 'page-templates/template-home.php' ), true ) ) {
             $styles = array( 'home.css' );
             $script = 'home.js';
-        } elseif ( 'about' === $slug || 'page-templates/template-about.php' === $template ) {
+        } elseif ( 'about' === $slug || in_array( $template, array( 'page-template/template-about.php', 'page-templates/template-about.php' ), true ) ) {
             $styles = array( 'about.css' );
             $script = 'about.js';
-        } elseif ( in_array( $slug, array( 'products', 'product-families', 'product-range' ), true ) || in_array( $template, array( 'page-template/template-product-families.php', 'page-template/template-product-range.php' ), true ) ) {
+        } elseif ( in_array( $slug, array( 'products', 'product-families', 'product-range' ), true ) || in_array( $template, array( 'page-template/template-product-families.php', 'page-template/template-product-range.php', 'page-templates/template-product-families.php', 'page-templates/template-product-range.php' ), true ) ) {
             // Both product directories share one responsive design system and live-search controller.
             $styles = array( 'products.css' );
             $script = 'products.js';
-        } elseif ( 'contact-us' === $slug || 'page-template/template-contact.php' === $template ) {
+        } elseif ( 'contact-us' === $slug || in_array( $template, array( 'page-template/template-contact.php', 'page-templates/template-contact.php' ), true ) ) {
             // Keep Contact page styling isolated in its own stylesheet.
             $styles = array( 'contact.css' );
-        } elseif ( 'bhavik-enterprises' === $slug || in_array( $template, array( 'page-template/template-bhavik-enterprises.php', 'page-templates/template-bhavik-enterprises.php' ), true ) ) {
+        } elseif ( ab_is_bhavik_page() ) {
             /*
              * Bhavik Enterprises is built from the About page's components plus
-             * the Contact page's form section, so it loads exactly those two
-             * stylesheets — same order, same files, no page-specific CSS.
+             * the Contact page's form section, so it loads both stylesheets
+             * followed by site.css.
              */
             $styles = array( 'about.css', 'contact.css' );
             // about.js is the theme's own reveal controller and is fully guarded.
             $script = 'about.js';
-        } elseif ( in_array( $slug, array( 'recycled-plastics','ps','abs','eva','pvc','pp','ldpe','hdpe', 'material', 'materials' ), true ) || 'page-templates/template-material.php' === $template || 'page-templates/template-material-Recycled-Plastics.php' === $template || 'page-templates/template-material-PS.php' === $template || 'page-templates/template-material-ABS.php' === $template || 'page-templates/template-material-EVA.php' === $template || 'page-templates/template-material-PVC.php' === $template || 'page-templates/template-material-PP.php' === $template || 'page-templates/template-material-LDPE.php' === $template  ) {
+        } elseif (
+            in_array( $slug, array( 'recycled-plastics', 'ps', 'abs', 'eva', 'pvc', 'pp', 'ldpe', 'hdpe', 'material', 'materials' ), true )
+            || in_array(
+                $template,
+                array(
+                    'page-template/template-material.php',
+                    'page-template/template-material-Recycled-Plastics.php',
+                    'page-template/template-material-PS.php',
+                    'page-template/template-material-ABS.php',
+                    'page-template/template-material-EVA.php',
+                    'page-template/template-material-PVC.php',
+                    'page-template/template-material-PP.php',
+                    'page-template/template-material-LDPE.php',
+                    'page-templates/template-material.php',
+                    'page-templates/template-material-Recycled-Plastics.php',
+                    'page-templates/template-material-PS.php',
+                    'page-templates/template-material-ABS.php',
+                    'page-templates/template-material-EVA.php',
+                    'page-templates/template-material-PVC.php',
+                    'page-templates/template-material-PP.php',
+                    'page-templates/template-material-LDPE.php',
+                ),
+                true
+            )
+        ) {
             $styles = array( 'material.css' );
             $script = 'material.js';
         }
