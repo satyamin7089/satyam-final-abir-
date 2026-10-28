@@ -141,11 +141,6 @@ $bv_faqs = array(
     <!-- 1. Hero -->
     <section class="ab-about-hero" id="bv-hero" aria-labelledby="bv-hero-title">
         <div class="ab-wrap">
-            <nav class="ab-crumbs" aria-label="Breadcrumb">
-                <a href="#bv-hero">Home</a>
-                <span aria-hidden="true">/</span>
-                <span aria-current="page">Bhavik Enterprises</span>
-            </nav>
             <div class="ab-about-hero-grid">
                 <div class="ab-about-hero-copy ab-reveal">
                     <span class="ab-eyebrow">Authorised Distributor of Abiroverseas LLC</span>

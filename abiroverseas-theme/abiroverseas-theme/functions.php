@@ -2,7 +2,7 @@
 /** Abiroverseas — WordPress theme functions. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'AB_THEME_VERSION', '1.5.3' );
+define( 'AB_THEME_VERSION', '1.5.4' );
 
 /**
  * Determine whether the current request renders the Bhavik Enterprises page.
