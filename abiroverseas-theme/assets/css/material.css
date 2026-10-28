@@ -482,10 +482,14 @@ p {
 
 .ab-overview-visual {
     padding: 27px;
+    height: auto;
+    min-height: 0;
+    max-height: none;
     border-radius: 22px;
     background: linear-gradient(145deg, #e5f1ee, #f3f7f6);
     border: 1px solid #d7e7e3;
     position: relative;
+    isolation: isolate;
     overflow: hidden
 }
 
@@ -546,9 +550,12 @@ p {
 }
 
 .ab-tech-note {
+    position: relative;
+    z-index: 1;
     font-size: 17px;
+    line-height: 1.55;
     color: #687a7f;
-    margin-top: 14px
+    margin: 14px 0 0
 }
 
 .ab-grade-method-grid {
@@ -1859,20 +1866,25 @@ p {
     }
 
     .ab-overview-visual {
-        padding: 19px
+        padding: 20px;
+        height: auto;
+        min-height: 0;
+        max-height: none
     }
 
     .ab-overview-visual h3 {
-        font-size: 17px
+        font-size: 20px
     }
 
     .ab-character-grid {
-        gap: 8px
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px
     }
 
     .ab-character {
-        padding: 12px;
-        min-height: 106px
+        padding: 14px;
+        min-height: 0;
+        height: auto
     }
 
     .ab-character strong {
@@ -1893,11 +1905,12 @@ p {
     }
 
     .ab-panel h3 {
-        font-size: 24px
+        font-size: 22px
     }
 
     .ab-grade-cards {
-        gap: 8px
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px
     }
 
     .ab-grade-card {
@@ -2969,5 +2982,35 @@ input[type="submit"],
     .ab-prod-hero .ab-product-gallery .ab-prod-art {
         min-height: calc(clamp(270px, 78vw, 330px) - 64px);
         border-radius: 22px;
+    }
+}
+
+/* Mobile & Tablet Portrait: ensure Material Overview never clips at the bottom
+   and stack Grades & Processing cards vertically (desktop stays 2x2). */
+@media (max-width: 1023px), (max-width: 1024px) and (orientation: portrait) {
+    .ab-overview-visual {
+        width: 100%;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: hidden;
+    }
+
+    .ab-character {
+        height: auto;
+        min-height: 0;
+    }
+
+    .ab-grade-cards {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .ab-character-grid,
+    .ab-grade-cards {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
     }
 }

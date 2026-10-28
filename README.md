@@ -1,4 +1,4 @@
-# Abiroverseas Polymer Materials — WordPress Theme (`v1.5.3`)
+# Abiroverseas Polymer Materials — WordPress Theme (`v1.5.6`)
 
 Repository for the custom WordPress theme **`abiroverseas-theme/`**, built for **Abiroverseas LLC** and its authorised India distributor landing page (**Bhavik Enterprises**).
 
@@ -117,6 +117,6 @@ abiroverseas-theme/
 ## 5. Design System Highlights
 
 - **Borderless 3D Orange Buttons Sitewide:** All buttons across every stylesheet use the orange accent gradient (`#ff9238 → #f58220 → #e26d0c`), white text, **`border: 0`**, and layered 3D shadows.
-- **2×2 Product Range 3D Cards (`products.css`):** Styled in a 2×2 grid (`repeat(2, minmax(0, 1fr))` on desktop/tablet, `1fr` on mobile) matching the sculptural borderless 3D image-card aesthetic of Bhavik's *Industries We Serve* cards, isolated strictly inside `products.css`.
+- **2×2 Product Range 3D Cards (`products.css`):** Styled in a 2×2 grid (`repeat(2, minmax(0, 1fr))` on desktop/tablet, `1fr` on mobile) matching the sculptural borderless 3D image-card aesthetic of Bhavik's *Industries We Serve* cards, with two separate 3D orange CTA buttons (`Explore <Material>` + `Enquire Now`) on every card, isolated strictly inside `products.css`.
 - **Tinted 3D FAQ Boxes on Bhavik (`bhavik.css`):** Each `<details class="ab-faq-item">` box features a soft sage-teal 3D surface, accent indicator bar, 3D rotating trigger button, and recessed white answer container.
 - **Native WordPress Forms & SEO:** All enquiry forms post through `admin-post.php` (`ab_material_enquiry` in `functions.php`) with nonce + honeypot protection; SEO meta and `FAQPage` JSON-LD schema work out-of-the-box without external paid plugins.

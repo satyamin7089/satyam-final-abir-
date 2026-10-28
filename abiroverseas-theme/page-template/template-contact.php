@@ -12,6 +12,32 @@ $ab_contact_result = '';
 if ( isset( $_GET['ab_enquiry'] ) && is_scalar( $_GET['ab_enquiry'] ) ) {
     $ab_contact_result = sanitize_key( wp_unslash( $_GET['ab_enquiry'] ) );
 }
+
+$ab_contact_topics = array(
+    'Product enquiry',
+    'Material availability',
+    'Grade selection help',
+    'General business enquiry',
+    'Technical guidance',
+    'PP',
+    'HDPE',
+    'LDPE / LLDPE',
+    'PVC',
+    'PET',
+    'ABS',
+    'PS / HIPS',
+    'Engineering plastics',
+    'Masterbatch / additives',
+    'Recycled polymers',
+    'Other',
+);
+$ab_selected_topic = '';
+if ( isset( $_GET['topic'] ) && is_scalar( $_GET['topic'] ) ) {
+    $candidate_topic = sanitize_text_field( wp_unslash( $_GET['topic'] ) );
+    if ( in_array( $candidate_topic, $ab_contact_topics, true ) ) {
+        $ab_selected_topic = $candidate_topic;
+    }
+}
 ?>
 <main id="main-content" class="ab-contact-page">
     <section class="ab-contact-hero" aria-labelledby="ab-contact-title">
@@ -109,22 +135,9 @@ if ( isset( $_GET['ab_enquiry'] ) && is_scalar( $_GET['ab_enquiry'] ) ) {
                             <label for="contact-topic">Enquiry type <span aria-hidden="true">*</span></label>
                             <select id="contact-topic" name="topic" required>
                                 <option value="">Choose a topic</option>
-                                <option>Product enquiry</option>
-                                <option>Material availability</option>
-                                <option>Grade selection help</option>
-                                <option>General business enquiry</option>
-                                <option>Technical guidance</option>
-                                <option>PP</option>
-                                <option>HDPE</option>
-                                <option>LDPE / LLDPE</option>
-                                <option>PVC</option>
-                                <option>PET</option>
-                                <option>ABS</option>
-                                <option>PS / HIPS</option>
-                                <option>Engineering plastics</option>
-                                <option>Masterbatch / additives</option>
-                                <option>Recycled polymers</option>
-                                <option>Other</option>
+                                <?php foreach ( $ab_contact_topics as $ab_topic_option ) : ?>
+                                    <option value="<?php echo esc_attr( $ab_topic_option ); ?>"<?php selected( $ab_selected_topic, $ab_topic_option ); ?>><?php echo esc_html( $ab_topic_option ); ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="ab-field ab-field--full">
