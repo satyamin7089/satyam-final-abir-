@@ -1,4 +1,4 @@
-# Abiroverseas Polymer Materials — WordPress Theme (`v1.5.3`)
+# Abiroverseas Polymer Materials — WordPress Theme (`v1.5.4`)
 
 A custom, lightweight classic WordPress theme (`abiroverseas-theme`) engineered for **Abiroverseas LLC** and its authorised India distributor landing page (**Bhavik Enterprises**).
 
@@ -30,7 +30,7 @@ Incoming WordPress URL
 
 ```text
 abiroverseas-theme/
-├── style.css                                   # WordPress theme header metadata (v1.5.3)
+├── style.css                                   # WordPress theme header metadata (v1.5.4)
 ├── functions.php                               # Theme setup, per-page CSS/JS enqueue, CPT/taxonomies, SEO/FAQ meta, enquiry handler
 ├── header.php                                  # Global Header One (Abiroverseas LLC sitewide navigation & SVG icon sprite)
 ├── footer.php                                  # Global Footer One (Abiroverseas LLC 4-column footer)
@@ -124,7 +124,7 @@ To make ongoing maintenance effortless without conditional tangles:
      - **Address:** Village Barhat Bangar, Mandhana Bithoor Road, Kanpur – 209217, UP, India
      - **Phone / WhatsApp:** `+91 7007049478`
      - **Email:** `info@bhavikenterprises.com`
-     - **Our Presence:** **Head Office:** Kanpur | **Branches:** Mumbai, Mundra
+     - **Our Presence:** **Head Office:** Kanpur and **Branches:** Mumbai, Mundra (stacked vertically inside the Contact Us section across desktop, tablet landscape, and mobile)
 
 ---
 
@@ -132,11 +132,12 @@ To make ongoing maintenance effortless without conditional tangles:
 
 When editing or adding sections, follow these established design rules:
 
-- **All Buttons = Borderless 3D Orange Accent:** Every button across the theme (`.ab-btn`, `.ab-btn--blue`, `.ab-btn--outline`, `.ab-btn--light`, `.ab-contact-submit`, `.ab-range-card-cta`, `.kh-button`, `.kh-button-light`, `.kh-enquiry-button`, header quote button, footer CTA, and scroll-to-top) uses the orange accent gradient (`#ff9238 → #f58220 → #e26d0c`), white text, **`border: 0`**, and multi-layer 3D elevation shadows.
+- **All Buttons = Borderless 3D Orange Accent (Subtle Shadows):** Every button across the theme (`.ab-btn`, `.ab-btn--blue`, `.ab-btn--outline`, `.ab-btn--light`, `.ab-contact-submit`, `.ab-range-card-cta`, `.kh-button`, `.kh-button-light`, `.kh-enquiry-button`, header quote button, footer CTA, and scroll-to-top) uses the orange accent gradient (`#ff9238 → #f58220 → #e26d0c`), white text, **`border: 0`**, and restrained 3D elevation shadows in both resting and `:hover` states.
+- **Unified Eyebrows & Equal-Height Split/Hero Images:** Every page (including Bhavik Enterprises) shares the exact `.ab-eyebrow` design (`17px` desktop/tablet-landscape, `15px` tablet portrait, `14px` mobile, `#008080` teal text or `#a8ded6` on dark sections, and a `24px × 2px` `#f58220` orange leading dash aligned to the first line) and stretches right-side banner/split image containers (`align-items: stretch` + `position: absolute; inset: 0` cover media) to equal the exact height of the left-side copy container on desktop and tablet landscape (`>= 1024px`).
 - **Borderless 3D Image Cards:**
   - **Bhavik "Industries We Serve"** (`#industries` in `bhavik.css`) uses a 3-column desktop / 2-column tablet / 1-column mobile borderless 3D pedestal card with a rounded 16:10 photo stage, frosted badge, and floating `#008080` icon box overlapping the image bottom.
   - **Product Range** (`#ab-range-grid` in `products.css`) uses the same borderless 3D image-card craft in a **2×2 layout** (`repeat(2, minmax(0, 1fr))` on desktop & tablet, `1fr` on mobile), paired with a recessed borderless spec table and 3D orange CTA button, isolated strictly inside `products.css`.
-- **Bhavik FAQ Question Boxes:** Styled in `bhavik.css` (`.ab-faq-item`) with a tinted sage-mist 3D surface, left accent bar, 3D circular rotating trigger icon, and recessed white answer well so each question stands out against the white section background.
+- **Bhavik FAQ Question Boxes:** Styled in `bhavik.css` (`.ab-faq-item`) with a tinted sage-mist 3D surface, **no border and no left accent bar**, 3D circular rotating trigger icon, and recessed white answer well so each question stands out cleanly against the white section background.
 - **Unified Icon Boxes:** Icon containers (`.ab-icon-box`, `.ab-contact-detail-icon`, `.ab-range-card-icon`) use the `#008080` teal palette on soft 3D surfaces.
 - **Clean Photography:** Banner and slider images do not render decorative circle/ring overlays on top of photography.
 
