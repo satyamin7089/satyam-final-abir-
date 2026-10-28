@@ -2,7 +2,7 @@
 /** Abiroverseas — WordPress theme functions. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'AB_THEME_VERSION', '1.5.6' );
+define( 'AB_THEME_VERSION', '1.5.7' );
 
 /**
  * Determine whether the current request renders the Bhavik Enterprises page.
@@ -131,19 +131,41 @@ function ab_enqueue_assets() {
         }
     }
     // Load the declared brand font once so every template, including the shared header, uses the same real font instead of silently falling back.
+    $dir = get_template_directory();
+    $asset_ver = static function ( $rel_path ) use ( $dir, $version ) {
+        $abs = $dir . $rel_path;
+        return file_exists( $abs ) ? $version . '.' . (int) filemtime( $abs ) : $version;
+    };
+
     wp_enqueue_style( 'ab-reddit-sans', 'https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@400;500;600;700;800&display=swap', array(), null );
     $last_style = 'ab-reddit-sans';
     foreach ( $styles as $index => $file ) {
         // First sheet keeps the historical 'ab-page-layout' handle; any extra
         // sheet chains behind it so it still loads before site.css.
         $handle = 0 === $index ? 'ab-page-layout' : 'ab-page-layout-' . $index;
-        wp_enqueue_style( $handle, $base . '/assets/css/' . $file, array( $last_style ), $version );
+        wp_enqueue_style( $handle, $base . '/assets/css/' . $file, array( $last_style ), $asset_ver( '/assets/css/' . $file ) );
+        if ( 'products.css' === $file ) {
+            wp_add_inline_style(
+                $handle,
+                '.ab-products-page a{text-decoration:none;}' .
+                '.ab-products-page .ab-range-card-foot,.ab-range-card-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:14px;column-gap:14px;row-gap:12px;width:100%;margin-top:22px;}' .
+                '.ab-products-page a.ab-range-card-cta,.ab-products-page .ab-range-card-cta,.ab-range-card-cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:auto;min-width:0;min-height:48px;padding:13px 22px;border:0 !important;border-radius:14px;background:linear-gradient(180deg,#ff9238 0%,#f58220 54%,#e26d0c 100%);color:#ffffff !important;text-decoration:none !important;text-decoration-line:none !important;text-transform:uppercase !important;letter-spacing:.04em;font-size:16px;font-weight:700;line-height:1.2;cursor:pointer;}' .
+                '.ab-products-page a.ab-range-card-cta:link,.ab-products-page a.ab-range-card-cta:visited,.ab-products-page a.ab-range-card-cta:hover,.ab-products-page a.ab-range-card-cta:focus,.ab-products-page a.ab-range-card-cta:active,.ab-products-page a.ab-range-card-cta span{color:#ffffff !important;text-decoration:none !important;text-decoration-line:none !important;}' .
+                '@media (max-width:600px){.ab-products-page .ab-range-card-foot,.ab-range-card-foot{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:12px;}.ab-products-page a.ab-range-card-cta,.ab-products-page .ab-range-card-cta,.ab-range-card-cta{width:100%;justify-content:center;}}'
+            );
+        } elseif ( 'material.css' === $file ) {
+            wp_add_inline_style(
+                $handle,
+                '@media (max-width:1023px),(max-width:1024px) and (orientation:portrait){.ab-overview-visual{width:100%;height:auto !important;min-height:0 !important;max-height:none !important;overflow:hidden;}.ab-character{height:auto;min-height:0;}.ab-grade-cards{grid-template-columns:minmax(0,1fr) !important;gap:12px;}}' .
+                '@media (max-width:600px){.ab-character-grid,.ab-grade-cards{grid-template-columns:minmax(0,1fr) !important;gap:10px;}}'
+            );
+        }
         $last_style = $handle;
     }
-    wp_enqueue_style( 'ab-site-footer', $base . '/assets/css/site.css', array( $last_style ), $version );
-    if ( $script ) { wp_enqueue_script( 'ab-page-interactions', $base . '/assets/js/' . $script, array(), $version, true ); }
+    wp_enqueue_style( 'ab-site-footer', $base . '/assets/css/site.css', array( $last_style ), $asset_ver( '/assets/css/site.css' ) );
+    if ( $script ) { wp_enqueue_script( 'ab-page-interactions', $base . '/assets/js/' . $script, array(), $asset_ver( '/assets/js/' . $script ), true ); }
     // One navigation controller serves the shared header on every page.
-    wp_enqueue_script( 'ab-navigation', $base . '/assets/js/navigation.js', array(), $version, true );
+    wp_enqueue_script( 'ab-navigation', $base . '/assets/js/navigation.js', array(), $asset_ver( '/assets/js/navigation.js' ), true );
 }
 
 /** Install starter pages without overwriting existing page copy. */
