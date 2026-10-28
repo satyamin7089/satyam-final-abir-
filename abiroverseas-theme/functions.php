@@ -2,7 +2,7 @@
 /** Abiroverseas — WordPress theme functions. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'AB_THEME_VERSION', '1.5.2' );
+define( 'AB_THEME_VERSION', '1.5.3' );
 
 /**
  * Determine whether the current request renders the Bhavik Enterprises page.
@@ -97,14 +97,9 @@ function ab_enqueue_assets() {
             // Keep Contact page styling isolated in its own stylesheet.
             $styles = array( 'contact.css' );
         } elseif ( ab_is_bhavik_page() ) {
-            /*
-             * Bhavik Enterprises is built from the About page's components plus
-             * the Contact page's form section, so it loads both stylesheets
-             * followed by site.css.
-             */
-            $styles = array( 'about.css', 'contact.css' );
-            // about.js is the theme's own reveal controller and is fully guarded.
-            $script = 'about.js';
+            // Keep Bhavik Enterprises 100% isolated in its own dedicated stylesheet and script.
+            $styles = array( 'bhavik.css' );
+            $script = 'bhavik.js';
         } elseif (
             in_array( $slug, array( 'recycled-plastics', 'ps', 'abs', 'eva', 'pvc', 'pp', 'ldpe', 'hdpe', 'material', 'materials' ), true )
             || in_array(
@@ -308,7 +303,17 @@ function ab_ensure_bhavik_page() {
     foreach ( $defaults['pages'] as $candidate ) {
         if ( isset( $candidate['slug'] ) && 'bhavik-enterprises' === $candidate['slug'] ) { $page_data = $candidate; break; }
     }
-    if ( ! $page_data ) { return; }
+    if ( ! $page_data ) {
+        $page_data = array(
+            'slug'            => 'bhavik-enterprises',
+            'title'           => 'Bhavik Enterprises',
+            'template'        => 'page-template/template-bhavik-enterprises.php',
+            'seo_title'       => 'Bhavik Enterprises — Authorised Distributor of Abiroverseas LLC in India',
+            'seo_description' => 'Bhavik Enterprises supplies virgin and reprocessed LDPE, HDPE, PP and PVC raw materials across India from Kanpur, Mumbai and Mundra.',
+            'schema_type'     => 'WebPage',
+            'faqs'            => array(),
+        );
+    }
 
     $page = get_page_by_path( $page_data['slug'], OBJECT, 'page' );
     if ( $page ) {

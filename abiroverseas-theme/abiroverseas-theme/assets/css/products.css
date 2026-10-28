@@ -16,16 +16,7 @@
     background: radial-gradient(ellipse at 82% 42%, rgba(0,128,128,.09), transparent 35%), linear-gradient(112deg, #f7faf9 0%, #f3f7f6 53%, #eaf1f2 100%);
 }
 .ab-products-page .ab-products-hero::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    width: 570px;
-    height: 570px;
-    right: -180px;
-    top: -265px;
-    border-radius: 50%;
-    box-shadow: 0 0 0 1px rgba(0,128,128,.1), 0 0 0 42px rgba(0,128,128,.025), 0 0 0 88px rgba(0,128,128,.02);
-    pointer-events: none;
+    display: none !important;
 }
 .ab-products-hero-grid {
     position: relative;
@@ -245,113 +236,406 @@
     height: 34px;
     flex: 0 0 34px;
     place-items: center;
-    border: 1px solid #e8eeec;
+    border: 0;
     border-radius: 10px;
-    background: #f7faf9;
-    color: #6b7c82;
+    background: #f1f6f5;
+    color: #536572;
     font-size: 20px;
+    box-shadow: inset 0 1px 2px rgba(16,38,56,.06);
 }
-.ab-products-search-hint { margin: 8px 3px 0; color: #7a898e; font-size: 12px; line-height: 1.5; }
-.ab-family-grid, .ab-range-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 25px; align-items: stretch; }
-.ab-family-card, .ab-range-card {
+.ab-products-search-hint { margin: 8px 3px 0; color: #7a898e; font-size: 13px; line-height: 1.5; }
+
+/* =========================================================================
+   PRODUCT FAMILIES GRID & 2x2 PRODUCT RANGE 3D BORDERLESS IMAGE CARDS
+   (Isolated strictly inside products.css — no cross-page stylesheet sharing)
+   ========================================================================= */
+
+.ab-family-grid,
+.ab-range-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    align-items: stretch;
+}
+
+.ab-family-card {
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 14px 22px;
     overflow: hidden;
-    border: 1px solid rgba(218,229,227,.9);
-    border-radius: 21px;
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(22,44,62,.035), 0 14px 28px rgba(22,44,62,.055), 0 25px 48px rgba(22,44,62,.035), inset 0 1px 0 rgba(255,255,255,.95);
-    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    border: 0 !important;
+    border-radius: 26px;
+    background: linear-gradient(165deg, #ffffff 0%, #fafdfd 58%, #eff6f5 100%);
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(16, 38, 56, .04),
+        0 14px 28px -6px rgba(16, 38, 56, .10),
+        0 32px 62px -14px rgba(13, 62, 68, .15),
+        inset 0 1px 0 rgba(255, 255, 255, .98),
+        inset 0 -3px 6px rgba(0, 128, 128, .05);
+    transition: transform .34s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .34s cubic-bezier(.22, 1, .36, 1);
 }
-.ab-family-card { display: flex; flex-direction: column; color: inherit; text-decoration: none; }
-.ab-family-card:hover, .ab-family-card:focus-visible, .ab-range-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(0,128,128,.25);
-    box-shadow: 0 8px 18px rgba(22,44,62,.055), 0 22px 42px rgba(22,44,62,.09), 0 32px 60px rgba(22,44,62,.045), inset 0 1px 0 #fff;
+
+.ab-family-card:hover,
+.ab-family-card:focus-visible {
+    transform: translateY(-7px);
+    box-shadow: 0 6px 12px rgba(16, 38, 56, .06),
+        0 22px 44px -8px rgba(16, 38, 56, .14),
+        0 40px 76px -14px rgba(0, 128, 128, .20),
+        inset 0 1px 0 #ffffff;
 }
-.ab-family-card-image, .ab-range-card-image {
+
+.ab-family-card-image {
     position: relative;
+    aspect-ratio: 16 / 10;
+    border: 0 !important;
+    border-radius: 18px;
     overflow: hidden;
     isolation: isolate;
-    background: linear-gradient(145deg, #e6efed, #d7e5e3);
+    background: linear-gradient(140deg, #102a3d, #0f5666);
+    box-shadow: 0 14px 28px -8px rgba(13, 44, 58, .26),
+        0 4px 10px rgba(13, 44, 58, .11);
 }
-.ab-family-card-image { aspect-ratio: 1.42 / 1; }
-.ab-range-card-image { aspect-ratio: 1.72 / 1; }
-.ab-family-card-image::after, .ab-range-card-image::after {
+
+.ab-family-card-image::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(12,35,47,.05), transparent 42%, rgba(12,35,47,.16));
+    background: linear-gradient(180deg, rgba(12, 34, 48, .04) 0%, rgba(12, 34, 48, 0) 44%, rgba(12, 34, 48, .40) 100%);
     pointer-events: none;
 }
-.ab-family-card-image img, .ab-range-card-image img {
+
+.ab-family-card-image img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform .55s cubic-bezier(.2,.65,.3,1);
+    transition: transform .55s cubic-bezier(.22, 1, .36, 1);
 }
-.ab-family-card:hover .ab-family-card-image img, .ab-range-card:hover .ab-range-card-image img { transform: scale(1.055); }
-.ab-family-card-index, .ab-range-card-index {
-    position: absolute;
-    z-index: 1;
-    top: 14px;
-    left: 14px;
-    display: grid;
-    width: 38px;
-    height: 38px;
-    place-items: center;
-    border: 1px solid rgba(255,255,255,.45);
-    border-radius: 12px;
-    background: rgba(255,255,255,.88);
-    color: #25545b;
-    backdrop-filter: blur(9px);
-    box-shadow: 0 5px 14px rgba(14,38,48,.09);
-    font-size: 12px;
-    font-weight: 800;
+
+.ab-family-card:hover .ab-family-card-image img {
+    transform: scale(1.06);
 }
+
 .ab-family-card-arrow {
     position: absolute;
-    z-index: 1;
+    z-index: 2;
     right: 15px;
     bottom: 15px;
     display: grid;
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     place-items: center;
-    border: 1px solid rgba(255,255,255,.6);
+    border: 0 !important;
     border-radius: 13px;
-    background: rgba(255,255,255,.9);
-    color: var(--ab-teal, #008080);
-    box-shadow: 0 6px 18px rgba(14,38,48,.1);
+    background: linear-gradient(180deg, #ff9238 0%, #f58220 54%, #e26d0c 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(204, 92, 6, .24),
+        0 12px 24px rgba(245, 130, 32, .32),
+        inset 0 1px 0 rgba(255, 255, 255, .38),
+        inset 0 -2px 0 rgba(166, 72, 0, .24);
     font-size: 21px;
-    transition: transform .2s ease, background .2s ease;
+    transition: transform .24s cubic-bezier(.22, 1, .36, 1), box-shadow .24s ease;
 }
-.ab-family-card:hover .ab-family-card-arrow { transform: translate(2px,-2px); background: #fff; }
-.ab-family-card-title { display: flex; flex: 1; align-items: center; justify-content: space-between; gap: 14px; padding: 20px 20px 22px; }
-.ab-family-card-title h3 { margin: 0; font-size: clamp(18px, 1.5vw, 22px); line-height: 1.3; letter-spacing: -.025em; }
-.ab-family-card-title > span { flex: none; color: var(--ab-teal, #008080); font-size: 11px; font-weight: 750; white-space: nowrap; }
-.ab-range-card { display: flex; flex-direction: column; scroll-margin-top: 120px; }
-.ab-range-card-body { display: flex; flex: 1; flex-direction: column; min-width: 0; padding: 21px 21px 20px; }
-.ab-range-card-body h3 { margin: 0 0 15px; font-size: clamp(20px, 1.65vw, 22px); line-height: 1.25; letter-spacing: -.03em; }
-.ab-range-points { display: grid; gap: 10px; margin: 0 0 18px; padding: 0; list-style: none; }
-.ab-range-points li { position: relative; margin: 0; padding-left: 21px; color: #5e6e76; font-size: 17px; line-height: 1.62; }
+
+.ab-family-card:hover .ab-family-card-arrow {
+    transform: translateY(-2px);
+}
+
+.ab-family-card-title {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 20px 12px 4px;
+}
+
+.ab-family-card-title h3 {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.3;
+    letter-spacing: -.02em;
+}
+
+.ab-family-card-title > span {
+    flex: none;
+    color: var(--ab-teal, #008080);
+    font-size: 12px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+/* 2x2 Sculptural 3D Borderless Product Range Cards (matching Industries We Serve) */
+.ab-range-card {
+    position: relative;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 16px 26px;
+    border: 0 !important;
+    border-radius: 26px;
+    background: linear-gradient(165deg, #ffffff 0%, #fafdfd 58%, #eff6f5 100%);
+    box-shadow: 0 2px 5px rgba(16, 38, 56, .04),
+        0 14px 28px -6px rgba(16, 38, 56, .10),
+        0 32px 62px -14px rgba(13, 62, 68, .16),
+        inset 0 1px 0 rgba(255, 255, 255, .98),
+        inset 0 -3px 6px rgba(0, 128, 128, .05);
+    scroll-margin-top: 120px;
+    transform: translateZ(0);
+    transition: transform .34s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .34s cubic-bezier(.22, 1, .36, 1);
+}
+
+.ab-range-card-image {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    border: 0 !important;
+    border-radius: 18px;
+    overflow: hidden;
+    isolation: isolate;
+    background: linear-gradient(140deg, #102a3d, #0f5666);
+    box-shadow: 0 14px 28px -8px rgba(13, 44, 58, .28),
+        0 4px 10px rgba(13, 44, 58, .12);
+}
+
+.ab-range-card-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg,
+        rgba(12, 34, 48, .04) 0%,
+        rgba(12, 34, 48, 0) 44%,
+        rgba(12, 34, 48, .44) 100%);
+    pointer-events: none;
+}
+
+.ab-range-card-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform .55s cubic-bezier(.22, 1, .36, 1);
+}
+
+.ab-range-card-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    padding: 6px 13px;
+    border: 0 !important;
+    border-radius: 999px;
+    background: rgba(16, 38, 56, .68);
+    color: #eef9f7;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 6px 16px rgba(10, 26, 38, .24),
+        inset 0 1px 0 rgba(255, 255, 255, .22);
+}
+
+.ab-range-card-body {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    padding: 0 12px;
+}
+
+/* Floating 3D Teal Icon Pedestal overlapping photo bottom */
+.ab-range-card-icon {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    margin-top: -24px;
+    margin-bottom: 14px;
+    border: 0 !important;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #ffffff 0%, #e4f2f0 100%);
+    color: var(--ab-teal, #008080);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 10px 24px rgba(14, 45, 57, .18),
+        0 3px 7px rgba(14, 45, 57, .09),
+        inset 0 1px 2px #ffffff;
+    transition: transform .34s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .34s cubic-bezier(.22, 1, .36, 1);
+}
+
+.ab-range-card-icon .ab-icon {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.ab-range-card-body h3 {
+    margin: 0 0 14px;
+    font-size: 22px;
+    line-height: 1.28;
+    font-weight: 700;
+    letter-spacing: -.018em;
+    color: var(--ab-ink, #142334);
+}
+
+.ab-range-points {
+    display: grid;
+    gap: 10px;
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.ab-range-points li {
+    position: relative;
+    margin: 0;
+    padding-left: 20px;
+    color: #536572;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
 .ab-range-points li::before {
     content: "";
     position: absolute;
     top: .58em;
     left: 1px;
-    width: 8px;
-    height: 8px;
-    border-radius: 3px;
-    background: var(--ab-products-orange);
-    box-shadow: 0 0 0 3px rgba(245,130,32,.1);
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ab-teal, #008080);
+    box-shadow: 0 0 0 3px rgba(0, 128, 128, .12);
 }
-.ab-range-table-wrap { margin-top: auto; overflow: hidden; border: 1px solid #e3ecea; border-radius: 12px; background: #f8fbfa; }
-.ab-range-table { width: 100%; border-collapse: collapse; border-spacing: 0; font-size: 17px; line-height: 1.5; text-align: left; }
-.ab-range-table th, .ab-range-table td { padding: 9px 10px; border-bottom: 1px solid #e5edeb; vertical-align: top; overflow-wrap: anywhere; }
-.ab-range-table tr:last-child th, .ab-range-table tr:last-child td { border-bottom: 0; }
-.ab-range-table th { width: 39%; color: #416068; font-weight: 750; }
-.ab-range-table td { color: #64747a; }
+
+.ab-range-table-wrap {
+    margin-top: auto;
+    overflow: hidden;
+    border: 0 !important;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .84);
+    box-shadow: inset 0 2px 5px rgba(15, 42, 56, .05),
+        0 4px 12px rgba(15, 42, 56, .04);
+}
+
+.ab-range-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.ab-range-table th,
+.ab-range-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(20, 35, 52, .055);
+    vertical-align: top;
+    overflow-wrap: anywhere;
+}
+
+.ab-range-table tr:last-child th,
+.ab-range-table tr:last-child td {
+    border-bottom: 0;
+}
+
+.ab-range-table th {
+    width: 38%;
+    color: #264852;
+    font-weight: 700;
+}
+
+.ab-range-table td {
+    color: #576971;
+}
+
+.ab-range-card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+
+/* Borderless 3D Orange Accent Button on each Product Range card */
+.ab-range-card-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 48px;
+    padding: 12px 22px;
+    border: 0 !important;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #ff9238 0%, #f58220 54%, #e26d0c 100%);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: .01em;
+    box-shadow: 0 3px 6px rgba(204, 92, 6, .22),
+        0 10px 24px rgba(245, 130, 32, .30),
+        0 20px 38px -8px rgba(245, 130, 32, .22),
+        inset 0 1px 0 rgba(255, 255, 255, .38),
+        inset 0 -2px 0 rgba(166, 72, 0, .24);
+    transition: transform .24s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .24s cubic-bezier(.22, 1, .36, 1),
+        background .24s ease;
+}
+
+.ab-range-card-cta .ab-icon {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+@media (hover: hover) {
+    .ab-range-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 6px 12px rgba(16, 38, 56, .06),
+            0 22px 44px -8px rgba(16, 38, 56, .14),
+            0 40px 76px -14px rgba(0, 128, 128, .20),
+            inset 0 1px 0 #ffffff;
+    }
+
+    .ab-range-card:hover .ab-range-card-image img {
+        transform: scale(1.06);
+    }
+
+    .ab-range-card:hover .ab-range-card-icon {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 28px rgba(0, 128, 128, .22),
+            0 4px 10px rgba(14, 45, 57, .10),
+            inset 0 1px 2px #ffffff;
+    }
+
+    .ab-range-card:hover .ab-range-card-cta {
+        transform: translateY(-2px);
+        background: linear-gradient(180deg, #ff9d4b 0%, #ff8826 52%, #e87312 100%);
+        box-shadow: 0 6px 12px rgba(204, 92, 6, .26),
+            0 16px 32px rgba(245, 130, 32, .38),
+            0 26px 48px -8px rgba(245, 130, 32, .28),
+            inset 0 1px 0 rgba(255, 255, 255, .46),
+            inset 0 -2px 0 rgba(150, 62, 0, .26);
+    }
+}
 .ab-products-empty {
     display: flex;
     flex-direction: column;
@@ -373,10 +657,10 @@
 @media (max-width: 1000px) {
     .ab-products-hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: 30px; }
     .ab-products-hero-art { min-height: 100%; }
-    .ab-family-grid, .ab-range-grid { gap: 18px; }
-    .ab-family-card-title { align-items: flex-start; flex-direction: column; gap: 8px; padding: 17px; }
-    .ab-range-card-body { padding: 18px; }
-    .ab-range-points li { font-size: 12px; }
+    .ab-family-grid, .ab-range-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+    .ab-family-card-title { align-items: flex-start; flex-direction: column; gap: 8px; padding: 17px 10px 4px; }
+    .ab-range-card-body { padding: 0 8px; }
+    .ab-range-points li { font-size: 16px; }
 }
 @media (max-width: 760px) {
     .ab-products-hero-grid { grid-template-columns: minmax(0,1fr); gap: 30px; }
@@ -384,15 +668,14 @@
     .ab-products-hero-art { min-height: clamp(270px, 58vw, 390px); }
     .ab-products-section-head { align-items: flex-start; flex-direction: column; gap: 17px; }
     .ab-products-total { margin: 0; }
-    .ab-family-grid, .ab-range-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-    .ab-family-card-title h3 { font-size: 18px; }
+    .ab-family-grid, .ab-range-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .ab-family-card-title h3 { font-size: 20px; }
     .ab-family-card-title > span { white-space: normal; }
-    .ab-range-card-body h3 { font-size: 20px; }
-    .ab-range-points li { font-size: 13px; }
+    .ab-range-card-body h3 { font-size: 22px; }
+    .ab-range-points li { font-size: 16px; }
 }
 @media (max-width: 520px) {
     .ab-products-page .ab-products-hero { padding: 34px 0 43px; }
-    .ab-products-page .ab-products-hero::before { width: 390px; height: 390px; right: -220px; top: -190px; }
     .ab-products-hero-grid { gap: 25px; }
     .ab-products-breadcrumbs { margin-bottom: 15px; font-size: 12px; }
     .ab-products-hero-copy h1 { font-size: clamp(34px, 9vw, 43px); margin-bottom: 15px; }
@@ -412,16 +695,17 @@
     .ab-products-search input { height: 40px; font-size: 14px; }
     .ab-products-search input::placeholder { font-size: 13px; }
     .ab-products-search kbd { display: none; }
-    .ab-family-grid, .ab-range-grid { grid-template-columns: minmax(0,1fr); gap: 17px; }
-    .ab-family-card-image { aspect-ratio: 1.7 / 1; }
-    .ab-family-card-title { align-items: center; flex-direction: row; padding: 17px 18px 19px; }
-    .ab-family-card-title h3 { font-size: 19px; }
+    .ab-family-grid, .ab-range-grid { grid-template-columns: minmax(0,1fr); gap: 18px; }
+    .ab-family-card, .ab-range-card { padding: 12px 12px 22px; border-radius: 22px; }
+    .ab-family-card-image, .ab-range-card-image { aspect-ratio: 16 / 10; }
+    .ab-family-card-title { align-items: center; flex-direction: row; padding: 17px 10px 4px; }
+    .ab-family-card-title h3 { font-size: 20px; }
     .ab-family-card-title > span { font-size: 11px; white-space: nowrap; }
-    .ab-range-card-image { aspect-ratio: 1.75 / 1; }
-    .ab-range-card-body { padding: 19px; }
+    .ab-range-card-body { padding: 0 6px; }
     .ab-range-card-body h3 { font-size: 22px; }
-    .ab-range-points li { font-size: 13px; }
-    .ab-range-table th, .ab-range-table td { padding: 9px; font-size: 12px; }
+    .ab-range-points li { font-size: 16px; }
+    .ab-range-table th, .ab-range-table td { padding: 9px 10px; font-size: 15px; }
+    .ab-range-card-cta { width: 100%; }
     .ab-products-live-status { text-align: left; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -531,7 +815,7 @@
 .ab-product-range-page .ab-range-card { position: relative; }
 .ab-products-page.ab-product-range-page .ab-range-card-click {
     position: absolute;
-    z-index: 3;
+    z-index: 4;
     inset: 0;
     display: block;
     overflow: hidden;
@@ -539,34 +823,7 @@
     color: inherit;
     text-decoration: none;
 }
-.ab-products-page.ab-product-range-page .ab-range-card-click > span {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    padding: 9px 12px;
-    border: 1px solid rgba(255,255,255,.65);
-    border-radius: 999px;
-    background: rgba(255,255,255,.93);
-    color: var(--ab-teal, #008080);
-    box-shadow: 0 5px 16px rgba(14,38,48,.12);
-    font-size: 12px;
-    font-weight: 800;
-    line-height: 1.2;
-    transition: background .2s ease, transform .2s ease;
-}
-.ab-products-page.ab-product-range-page .ab-range-card-click > span > span { font-size: 17px; line-height: .8; }
-.ab-products-page.ab-product-range-page .ab-range-card-click:hover > span,
-.ab-products-page.ab-product-range-page .ab-range-card-click:focus-visible > span {
-    background: #fff;
-    transform: translateY(-2px);
-}
 .ab-products-page.ab-product-range-page .ab-range-card-click:focus-visible {
     outline: 3px solid var(--ab-orange, #F58220);
-    outline-offset: -4px;
-}
-@media (max-width: 520px) {
-    .ab-products-page.ab-product-range-page .ab-range-card-click > span { top: 11px; right: 11px; padding: 8px 10px; font-size: 11px; }
+    outline-offset: 3px;
 }
