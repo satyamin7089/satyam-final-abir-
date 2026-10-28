@@ -1,4 +1,4 @@
-# Abiroverseas Polymer Materials — WordPress Theme (`v1.5.4`)
+# Abiroverseas Polymer Materials — WordPress Theme (`v1.5.5`)
 
 A custom, lightweight classic WordPress theme (`abiroverseas-theme`) engineered for **Abiroverseas LLC** and its authorised India distributor landing page (**Bhavik Enterprises**).
 
@@ -30,12 +30,13 @@ Incoming WordPress URL
 
 ```text
 abiroverseas-theme/
-├── style.css                                   # WordPress theme header metadata (v1.5.4)
+├── style.css                                   # WordPress theme header metadata (v1.5.5)
 ├── functions.php                               # Theme setup, per-page CSS/JS enqueue, CPT/taxonomies, SEO/FAQ meta, enquiry handler
 ├── header.php                                  # Global Header One (Abiroverseas LLC sitewide navigation & SVG icon sprite)
 ├── footer.php                                  # Global Footer One (Abiroverseas LLC 4-column footer)
 ├── header-bhavik.php                           # Standalone Header Two — dedicated to Bhavik Enterprises (get_header('bhavik'))
 ├── footer-bhavik.php                           # Standalone Footer Two — dedicated to Bhavik Enterprises (get_footer('bhavik'))
+├── 404.php                                     # Custom Error 404 page with smart "Back to Previous Page" button
 ├── page.php / index.php                        # Fallback standard WordPress page & index templates
 ├── archive-knowledge.php                       # Knowledge Center hub (/knowledge/) with search & taxonomy filters
 ├── single-knowledge.php                        # Single Knowledge Center article (/knowledge/{slug}/)
@@ -68,6 +69,7 @@ abiroverseas-theme/
     │   ├── material.css                        # Isolated styles for the 8 Material pages ONLY
     │   ├── knowledge.css                       # Isolated styles for Knowledge Center archive & articles ONLY
     │   ├── bhavik.css                          # Isolated styles for Bhavik Enterprises page ONLY
+    │   ├── error-404.css                       # Isolated styles for Error 404 page ONLY
     │   ├── site.css                            # Shared header, topbar, mobile nav, 4-column footer & scroll-to-top ONLY
     │   └── knowledge-admin.css                 # WP Admin meta box styles for Knowledge Center editor
     ├── js/
@@ -77,6 +79,7 @@ abiroverseas-theme/
     │   ├── products.js                         # Live instant client-side search filter for Product Families & Product Range
     │   ├── material.js                         # Material gallery carousel & scroll reveal
     │   ├── bhavik.js                           # Bhavik Enterprises scroll reveal controller
+    │   ├── error-404.js                        # Smart "Back to Previous Page" referrer & history controller (404 ONLY)
     │   ├── knowledge-hub.js                    # Knowledge Hub filter interactions
     │   ├── knowledge-single.js                 # Single Knowledge article TOC / interactions
     │   └── knowledge-admin.js                  # WP Admin repeater & rich-text controls
@@ -102,6 +105,7 @@ abiroverseas-theme/
 | **Knowledge Hub** (`/knowledge/` & taxonomies) | `archive-knowledge.php`, `taxonomy-*.php` | `knowledge.css` | `knowledge-hub.js` | `header.php` / `footer.php` |
 | **Knowledge Article** (`/knowledge/{slug}/`) | `single-knowledge.php` | `knowledge.css` | `knowledge-single.js` | `header.php` / `footer.php` |
 | **Bhavik Enterprises** (`/bhavik-enterprises/`) | `page-template/template-bhavik-enterprises.php` | `bhavik.css` | `bhavik.js` | `header-bhavik.php` / `footer-bhavik.php` |
+| **Error 404** (any missing URL) | `404.php` | `error-404.css` | `error-404.js` | `header.php` / `footer.php` |
 
 > **What `site.css` & `navigation.js` do:** Loaded on all front-end views solely to power the sticky header bar, topbar ticker, mobile hamburger drawer, 4-column footer, and floating back-to-top button.
 

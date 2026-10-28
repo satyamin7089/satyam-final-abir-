@@ -2,7 +2,7 @@
 /** Abiroverseas — WordPress theme functions. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'AB_THEME_VERSION', '1.5.4' );
+define( 'AB_THEME_VERSION', '1.5.5' );
 
 /**
  * Determine whether the current request renders the Bhavik Enterprises page.
@@ -71,7 +71,8 @@ function ab_enqueue_assets() {
     // A page can legitimately need more than one of the theme's stylesheets.
     $styles = array();
     $script = '';
-    if ( is_singular( 'knowledge' ) ) { $styles = array( 'knowledge.css' ); $script = 'knowledge-single.js'; }
+    if ( is_404() ) { $styles = array( 'error-404.css' ); $script = 'error-404.js'; }
+    elseif ( is_singular( 'knowledge' ) ) { $styles = array( 'knowledge.css' ); $script = 'knowledge-single.js'; }
     elseif ( is_post_type_archive( 'knowledge' ) || is_tax( array( 'knowledge_hub', 'knowledge_material', 'knowledge_topic' ) ) ) { $styles = array( 'knowledge.css' ); $script = 'knowledge-hub.js'; }
     elseif ( is_page() ) {
         /*
@@ -679,6 +680,7 @@ function ab_knowledge_archive_description() {
     return get_option( 'ab_knowledge_archive_description', 'Search practical polymer material guides, comparisons, processing notes and FAQs by material, product type or topic.' );
 }
 function ab_filter_document_title( $title ) {
+    if ( is_404() && ! ab_has_seo_plugin() ) { return 'Page Not Found (404) | Abiroverseas'; }
     if ( is_post_type_archive( 'knowledge' ) ) { return ab_knowledge_archive_title() ?: $title; }
     if ( ab_has_seo_plugin() || ! is_singular() ) { return $title; }
     $custom = get_post_meta( get_queried_object_id(), 'ab_meta_title', true );
