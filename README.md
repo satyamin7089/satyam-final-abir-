@@ -1,4 +1,4 @@
-# Abiroverseas Polymer Materials — WordPress Theme (`v1.5.6`)
+# Abiroverseas Polymer Materials — WordPress Theme (`v1.5.7`)
 
 Repository for the custom WordPress theme **`abiroverseas-theme/`**, built for **Abiroverseas LLC** and its authorised India distributor landing page (**Bhavik Enterprises**).
 

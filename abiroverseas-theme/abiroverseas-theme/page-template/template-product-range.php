@@ -77,7 +77,7 @@ $ab_range_items = array(
         'alt'           => 'Polypropylene resin granules for injection moulding and extrusion',
         'title'         => 'Polypropylene (PP)',
         'search'        => 'Polypropylene PP polypropylene injection moulding extrusion packaging automotive household',
-        'explore_label' => 'Explore PP',
+        'explore_label' => 'EXPLORE PP',
         'explore_url'   => $ab_resolve_range_url(
             array( 'pp', 'polypropylene' ),
             array( 'page-template/template-material-PP.php', 'page-templates/template-material-PP.php' ),
@@ -103,7 +103,7 @@ $ab_range_items = array(
         'alt'           => 'High-Density Polyethylene material for pipe and blow moulding applications',
         'title'         => 'High-Density Polyethylene (HDPE)',
         'search'        => 'High-Density Polyethylene HDPE high density polyethylene blow moulding pipe containers crates extrusion injection',
-        'explore_label' => 'Explore HDPE',
+        'explore_label' => 'EXPLORE HDPE',
         'explore_url'   => $ab_resolve_range_url(
             array( 'hdpe', 'high-density-polyethylene' ),
             array( 'page-template/template-material.php', 'page-templates/template-material.php' ),
@@ -129,7 +129,7 @@ $ab_range_items = array(
         'alt'           => 'LDPE and LLDPE polymer pellets for flexible packaging and film extrusion',
         'title'         => 'LDPE / LLDPE',
         'search'        => 'LDPE LLDPE low density linear low density polyethylene film flexible packaging extrusion',
-        'explore_label' => 'Explore LDPE',
+        'explore_label' => 'EXPLORE LDPE',
         'explore_url'   => $ab_resolve_range_url(
             array( 'ldpe', 'ldpe-lldpe', 'low-density-polyethylene' ),
             array( 'page-template/template-material-LDPE.php', 'page-templates/template-material-LDPE.php' ),
@@ -155,7 +155,7 @@ $ab_range_items = array(
         'alt'           => 'Polyvinyl Chloride compounds and granules for pipes, profiles and cable',
         'title'         => 'Polyvinyl Chloride (PVC)',
         'search'        => 'Polyvinyl Chloride PVC rigid flexible pipes profiles cable construction extrusion',
-        'explore_label' => 'Explore PVC',
+        'explore_label' => 'EXPLORE PVC',
         'explore_url'   => $ab_resolve_range_url(
             array( 'pvc', 'polyvinyl-chloride' ),
             array( 'page-template/template-material-PVC.php', 'page-templates/template-material-PVC.php' ),
@@ -181,7 +181,7 @@ $ab_range_items = array(
         'alt'           => 'Polyethylene Terephthalate resin pellets for bottles and thermoformed sheet',
         'title'         => 'Polyethylene Terephthalate (PET)',
         'search'        => 'Polyethylene Terephthalate PET packaging bottle sheet thermoforming injection',
-        'explore_label' => 'Explore PET',
+        'explore_label' => 'EXPLORE PET',
         'explore_url'   => $ab_resolve_range_url(
             array( 'pet', 'polyethylene-terephthalate' ),
             array(),
@@ -207,7 +207,7 @@ $ab_range_items = array(
         'alt'           => 'ABS engineering plastic pellets for moulded housings and technical parts',
         'title'         => 'Acrylonitrile Butadiene Styrene (ABS)',
         'search'        => 'Acrylonitrile Butadiene Styrene ABS engineering plastic impact surface finish injection moulding',
-        'explore_label' => 'Explore ABS',
+        'explore_label' => 'EXPLORE ABS',
         'explore_url'   => $ab_resolve_range_url(
             array( 'abs', 'acrylonitrile-butadiene-styrene' ),
             array( 'page-template/template-material-ABS.php', 'page-templates/template-material-ABS.php' ),
@@ -233,7 +233,7 @@ $ab_range_items = array(
         'alt'           => 'Polystyrene and HIPS granules for consumer goods and thermoforming',
         'title'         => 'Polystyrene / HIPS',
         'search'        => 'PS HIPS polystyrene high impact polystyrene thermoforming packaging injection',
-        'explore_label' => 'Explore PS',
+        'explore_label' => 'EXPLORE PS',
         'explore_url'   => $ab_resolve_range_url(
             array( 'ps', 'ps-hips', 'polystyrene' ),
             array( 'page-template/template-material-PS.php', 'page-templates/template-material-PS.php' ),
@@ -259,7 +259,7 @@ $ab_range_items = array(
         'alt'           => 'Engineering plastics including PA, PC and POM for demanding parts',
         'title'         => 'Engineering Plastics',
         'search'        => 'Engineering Plastics nylon polyamide PC polycarbonate POM acetal performance polymers',
-        'explore_label' => 'Explore Plastics',
+        'explore_label' => 'EXPLORE PLASTICS',
         'explore_url'   => $ab_resolve_range_url(
             array( 'engineering-plastics', 'abs' ),
             array( 'page-template/template-material-ABS.php', 'page-templates/template-material-ABS.php' ),
@@ -285,7 +285,7 @@ $ab_range_items = array(
         'alt'           => 'Concentrated polymer masterbatch and additive pellets',
         'title'         => 'Masterbatch & Additives',
         'search'        => 'Masterbatch Additives colour additive concentrate pigment UV stabiliser processing aid',
-        'explore_label' => 'Explore Additives',
+        'explore_label' => 'EXPLORE ADDITIVES',
         'explore_url'   => $ab_resolve_range_url(
             array( 'masterbatch-additives', 'masterbatch' ),
             array(),
@@ -311,7 +311,7 @@ $ab_range_items = array(
         'alt'           => 'Recycled and reprocessed PCR and PIR polymer pellets',
         'title'         => 'Recycled & Reprocessed Polymers',
         'search'        => 'Recycled Reprocessed Polymers PCR PIR post consumer post industrial polymer pellets',
-        'explore_label' => 'Explore Recycled',
+        'explore_label' => 'EXPLORE RECYCLED',
         'explore_url'   => $ab_resolve_range_url(
             array( 'recycled-plastics', 'recycled-polymers' ),
             array( 'page-template/template-material-Recycled-Plastics.php', 'page-templates/template-material-Recycled-Plastics.php' ),
@@ -337,7 +337,7 @@ $ab_range_items = array(
         'alt'           => 'Filled and reinforced industrial polymer compounds',
         'title'         => 'Industrial Polymer Compounds',
         'search'        => 'Industrial Polymer Compounds filled polymer reinforced compound custom formulation',
-        'explore_label' => 'Explore Compounds',
+        'explore_label' => 'EXPLORE COMPOUNDS',
         'explore_url'   => $ab_resolve_range_url(
             array( 'industrial-compounds', 'compounds' ),
             array( 'page-template/template-material-Recycled-Plastics.php', 'page-templates/template-material-Recycled-Plastics.php' ),
@@ -364,7 +364,7 @@ $ab_range_items = array(
         'alt'           => 'Polymer resin supplied in pellets, granules and bulk industrial bags',
         'title'         => 'Polymer Forms & Supply',
         'search'        => 'Polymer Forms Supply pellets granules powder compound bulk bags packaging supply',
-        'explore_label' => 'Explore Forms',
+        'explore_label' => 'EXPLORE FORMS',
         'explore_url'   => $ab_resolve_range_url(
             array( 'polymer-forms', 'hdpe' ),
             array( 'page-template/template-material.php', 'page-templates/template-material.php' ),
@@ -446,8 +446,8 @@ $ab_range_items = array(
                                     <span><?php echo esc_html( $item['explore_label'] ); ?></span>
                                     <svg class="ab-icon" aria-hidden="true"><use href="#ab-icon-arrow" /></svg>
                                 </a>
-                                <a class="ab-range-card-cta" href="<?php echo esc_url( $item['enquire_url'] ); ?>" aria-label="<?php echo esc_attr( 'Enquire Now about ' . $item['title'] ); ?>">
-                                    <span>Enquire Now</span>
+                                <a class="ab-range-card-cta" href="<?php echo esc_url( $item['enquire_url'] ); ?>" aria-label="<?php echo esc_attr( 'ENQUIRE NOW — ' . $item['title'] ); ?>">
+                                    <span>ENQUIRE NOW</span>
                                     <svg class="ab-icon" aria-hidden="true"><use href="#ab-icon-chat" /></svg>
                                 </a>
                             </div>
