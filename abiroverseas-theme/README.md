@@ -1,67 +1,180 @@
-# Abiroverseas Polymer Materials WordPress Theme
+# Abiroverseas Polymer Materials — WordPress Theme (`v1.5.3`)
 
-A custom classic WordPress theme built from the supplied final HTML layouts for **Home**, **About**, and the **HDPE material information page**. The third supplied layout is implemented as a normal WordPress Page template (not a product post type).
+A custom, lightweight classic WordPress theme (`abiroverseas-theme`) engineered for **Abiroverseas LLC** and its authorised India distributor landing page (**Bhavik Enterprises**).
 
-## Install
+This `README.md` is written so any developer, designer, or site administrator can understand **the entire theme flow, file map, CSS/JS isolation rules, header/footer setup, and editing workflow in one read**.
 
-1. In WordPress, open **Appearance → Themes → Add New → Upload Theme**.
-2. Upload `abiroverseas-theme.zip`, install it, and activate it.
-3. Activation creates starter Home, About and HDPE Pages if they do not already exist, assigns the matching templates, and sets Home as the static front page.
-4. Go to **Settings → Permalinks** and click **Save Changes** if `/knowledge/` or an article URL returns a 404.
-5. Open **Appearance → Menus → Primary Menu** to edit the shared header navigation. A starter Primary Menu is created and assigned automatically when none is assigned. Reorder items, add links, and create submenus here.
-6. Review the starter pages in **Pages** and update contact placeholders (company email and phone) from the supplied HTML layouts.
+---
 
-The theme does not overwrite existing page copy. It assigns the matching template to the starter pages it finds/creates and fills missing SEO/schema metadata.
+## 1. High-Level Theme Flow (How a Request Renders)
 
-## Page templates and isolated assets
+```text
+Incoming WordPress URL
+        │
+        ├──► Global Pages & Knowledge Center
+        │       1. Loads header.php        (Global topbar + Appearance → Menus primary nav + SVG sprite)
+        │       2. Runs Page / CPT Template (e.g., template-home.php, template-product-range.php, single-knowledge.php)
+        │       3. Enqueues ONLY that page's CSS + JS (via ab_enqueue_assets() in functions.php) + site.css + navigation.js
+        │       4. Loads footer.php        (Global 4-column Abiroverseas footer + scroll-to-top button)
+        │
+        └──► Bhavik Enterprises (/bhavik-enterprises/)
+                1. Loads header-bhavik.php (Standalone Header Two — same visual layout & logo, #anchor nav, India contact bar)
+                2. Runs page-template/template-bhavik-enterprises.php
+                3. Enqueues ONLY bhavik.css + bhavik.js + site.css + navigation.js
+                4. Loads footer-bhavik.php (Standalone Footer Two — same 4-column layout & white logo, Kanpur/Mumbai/Mundra details)
+```
 
-- `page-templates/template-home.php` → Home (`assets/css/home.css`, `assets/js/home.js`)
-- `page-templates/template-about.php` → About (`assets/css/about.css`, `assets/js/about.js`)
-- `page-templates/template-material.php` → HDPE material information (`assets/css/material.css`, `assets/js/material.js`)
-- Knowledge Center archive and article views have their own `assets/css/knowledge.css`, `assets/js/knowledge-hub.js`, and `assets/js/knowledge-single.js`.
+---
 
-The page templates retain the supplied HTML content and layout, with WordPress template wrappers, WordPress-safe asset URLs and internal links. All site sections (Home, About, HDPE information, and Knowledge Center) render the shared header from `header.php` and the same Home-style footer from `footer.php`; shared footer styling lives in `assets/css/site.css`. Its navigation is the registered WordPress `primary` menu location, managed under **Appearance → Menus**; activation seeds a starter menu but does not hard-code the menu items into page templates. Images use `get_theme_file_uri()` so their paths remain correct if the site is installed in a subdirectory or the theme folder is renamed. Internal site links use `home_url()`.
+## 2. Directory Structure at a Glance
 
-The shared header and site-wide footer use your WordPress upload logo at `/wp-content/uploads/2026/10/ABIR-Logo.png` through `home_url()`. The three new Home hero slides use your two provided upload images at `/wp-content/uploads/2026/10/Industrial-Resin-Pellets-and-Flowing-Waves.png` and `/wp-content/uploads/2026/10/Polymer-Pellets-in-a-Futuristic-Plant.png`. Confirm those files are present at these paths on the active WordPress site. The three additional banners are stacked beneath the original banner (not an overall auto-rotating hero). The final banner keeps the original Home hero gradient background and has a smooth four-image fade slider on its right side, with arrow navigation and selectable thumbnails. On mobile, that image gallery appears above the final banner copy.
+```text
+abiroverseas-theme/
+├── style.css                                   # WordPress theme header metadata (v1.5.3)
+├── functions.php                               # Theme setup, per-page CSS/JS enqueue, CPT/taxonomies, SEO/FAQ meta, enquiry handler
+├── header.php                                  # Global Header One (Abiroverseas LLC sitewide navigation & SVG icon sprite)
+├── footer.php                                  # Global Footer One (Abiroverseas LLC 4-column footer)
+├── header-bhavik.php                           # Standalone Header Two — dedicated to Bhavik Enterprises (get_header('bhavik'))
+├── footer-bhavik.php                           # Standalone Footer Two — dedicated to Bhavik Enterprises (get_footer('bhavik'))
+├── page.php / index.php                        # Fallback standard WordPress page & index templates
+├── archive-knowledge.php                       # Knowledge Center hub (/knowledge/) with search & taxonomy filters
+├── single-knowledge.php                        # Single Knowledge Center article (/knowledge/{slug}/)
+├── taxonomy-knowledge_hub.php                  # Knowledge Hub taxonomy archive
+├── taxonomy-knowledge_material.php             # Knowledge Material taxonomy archive
+├── taxonomy-knowledge_topic.php                # Knowledge Topic taxonomy archive
+├── inc/
+│   └── default-content.php                     # Starter page definitions & default SEO/FAQ metadata seeded once on activation
+├── page-template/
+│   ├── template-home.php                       # Front Page / Home
+│   ├── template-about.php                      # About Us (/about/)
+│   ├── template-contact.php                    # Contact Us (/contact-us/)
+│   ├── template-product-families.php           # Product Families 6-card searchable directory (/products/)
+│   ├── template-product-range.php              # Product Range 12-card 2x2 3D borderless directory (/product-range/)
+│   ├── template-bhavik-enterprises.php         # Bhavik Enterprises standalone distributor page (/bhavik-enterprises/)
+│   ├── template-material.php                   # HDPE Material Page (/hdpe/)
+│   ├── template-material-LDPE.php              # LDPE Material Page (/ldpe/)
+│   ├── template-material-PP.php                # Polypropylene (PP) Material Page (/pp/)
+│   ├── template-material-PVC.php               # PVC Material Page (/pvc/)
+│   ├── template-material-PS.php                # Polystyrene (PS) Material Page (/ps/)
+│   ├── template-material-ABS.php               # ABS Material Page (/abs/)
+│   ├── template-material-EVA.php               # EVA Material Page (/eva/)
+│   └── template-material-Recycled-Plastics.php # Recycled Plastics Material Page (/recycled-plastics/)
+└── assets/
+    ├── css/
+    │   ├── home.css                            # Isolated styles for Home page ONLY
+    │   ├── about.css                           # Isolated styles for About Us page ONLY
+    │   ├── contact.css                         # Isolated styles for Contact Us page ONLY
+    │   ├── products.css                        # Isolated styles for Product Families & 2x2 Product Range ONLY
+    │   ├── material.css                        # Isolated styles for the 8 Material pages ONLY
+    │   ├── knowledge.css                       # Isolated styles for Knowledge Center archive & articles ONLY
+    │   ├── bhavik.css                          # Isolated styles for Bhavik Enterprises page ONLY
+    │   ├── site.css                            # Shared header, topbar, mobile nav, 4-column footer & scroll-to-top ONLY
+    │   └── knowledge-admin.css                 # WP Admin meta box styles for Knowledge Center editor
+    ├── js/
+    │   ├── navigation.js                       # Shared mobile drawer & scroll-to-top controller (loaded on every page)
+    │   ├── home.js                             # Home hero photo slider & scroll reveal
+    │   ├── about.js                            # About scroll reveal & FAQ category tabs
+    │   ├── products.js                         # Live instant client-side search filter for Product Families & Product Range
+    │   ├── material.js                         # Material gallery carousel & scroll reveal
+    │   ├── bhavik.js                           # Bhavik Enterprises scroll reveal controller
+    │   ├── knowledge-hub.js                    # Knowledge Hub filter interactions
+    │   ├── knowledge-single.js                 # Single Knowledge article TOC / interactions
+    │   └── knowledge-admin.js                  # WP Admin repeater & rich-text controls
+    └── img/                                    # Bundled polymer & industrial photography assets
+```
 
-## Knowledge Center
+---
 
-The custom post type is **Knowledge Center** (`knowledge`). Articles resolve to `/knowledge/{your-url-slug}/`. Each article has a dedicated **Exact URL slug** field independent of its title and description; the theme synchronizes that slug to the WordPress permalink. The field accepts one URL segment (e.g. `hdpe-vs-ldpe`).
+## 3. Strict Per-Page CSS & JS Isolation (Core Rule)
 
-Each article editor includes the core content structure, while allowing article-specific headings and comparison column labels. Numbered section labels are not forced on the article page. Direct answers, explanatory text, FAQ answers, selection notes, and the standard WordPress article editor support inline links and formatting. The WordPress Featured image appears on both the archive card and article hero.
+**Every page type owns its own dedicated CSS file.** Do **not** place page-specific card or section rules into `site.css`, and do **not** chain unrelated page stylesheets together.
 
-The comparison table supports editable headings for all three columns and stacks as labeled cards on narrow mobile screens. FAQs feed the visible accordion and FAQPage structured data; answers support inline links. The unreliable custom-section builder has been removed. Add extra content with the native WordPress block editor, which supports headings, rich text, links, images, lists, quotes, tables, and groups; this block content appears after “Why materials differ” and before “When to consider”. The article-end CTA has per-article editable kicker, heading, copy, button label, and destination.
+`ab_enqueue_assets()` in `functions.php` resolves the current route (by slug first, then by assigned template) and loads **only** that route's CSS and JS:
 
-Taxonomies separate the browsing dimensions:
+| Page / Route | PHP Template | Dedicated CSS | Dedicated JS | Header / Footer |
+| :--- | :--- | :--- | :--- | :--- |
+| **Home** (`/`) | `page-template/template-home.php` | `home.css` | `home.js` | `header.php` / `footer.php` |
+| **About Us** (`/about/`) | `page-template/template-about.php` | `about.css` | `about.js` | `header.php` / `footer.php` |
+| **Contact Us** (`/contact-us/`) | `page-template/template-contact.php` | `contact.css` | — | `header.php` / `footer.php` |
+| **Product Families** (`/products/`) | `page-template/template-product-families.php` | `products.css` | `products.js` | `header.php` / `footer.php` |
+| **Product Range** (`/product-range/`) | `page-template/template-product-range.php` | `products.css` | `products.js` | `header.php` / `footer.php` |
+| **Material Pages** (`/hdpe/`, `/pp/`, `/ldpe/`, `/pvc/`, `/ps/`, `/abs/`, `/eva/`, `/recycled-plastics/`) | `page-template/template-material*.php` | `material.css` | `material.js` | `header.php` / `footer.php` |
+| **Knowledge Hub** (`/knowledge/` & taxonomies) | `archive-knowledge.php`, `taxonomy-*.php` | `knowledge.css` | `knowledge-hub.js` | `header.php` / `footer.php` |
+| **Knowledge Article** (`/knowledge/{slug}/`) | `single-knowledge.php` | `knowledge.css` | `knowledge-single.js` | `header.php` / `footer.php` |
+| **Bhavik Enterprises** (`/bhavik-enterprises/`) | `page-template/template-bhavik-enterprises.php` | `bhavik.css` | `bhavik.js` | `header-bhavik.php` / `footer-bhavik.php` |
 
-- **Knowledge Hub** — hierarchical topic/material hubs (HDPE, PP, LDPE / LLDPE, PVC, Recycled Polymers)
-- **Product Type / Material** — filters resources by material family
-- **Knowledge Topics** — comparisons, FAQs, grade selection, processing, applications, recycling/sustainability
+> **What `site.css` & `navigation.js` do:** Loaded on all front-end views solely to power the sticky header bar, topbar ticker, mobile hamburger drawer, 4-column footer, and floating back-to-top button.
 
-The Knowledge Center archive supports article/product-name search plus independent Product Type, Topic and Knowledge Hub filters. On theme activation, the HDPE taxonomy terms and nine **draft** article starters are created for the examples in the request (HDPE grades, processing, applications, virgin vs recycled, HDPE vs LDPE, MFI, PCR vs PIR, grade selection, and FAQs). Drafts are intentionally unpublished and contain no invented technical claims: fill the section fields, select categories, review, and publish them when ready.
+---
 
-## SEO and schema
+## 4. Separate Headers & Footers (Global vs Bhavik Enterprises)
 
-- Native WordPress Pages and Knowledge Articles have per-entry SEO title and meta description fields.
-- Pages have a selectable WebPage/AboutPage/ContactPage/CollectionPage schema type.
-- Knowledge articles emit Article schema.
-- FAQPage schema is generated from the page FAQ fields or the article FAQ rows. The About and HDPE starter pages receive FAQ rows extracted from the supplied visible FAQs.
-- The `/knowledge/` archive also has editable title/description settings under **Knowledge Center → Hub SEO** and outputs CollectionPage schema. If Yoast SEO, Rank Math, or AIOSEO is active, the theme passes title/description to its supported filters and avoids duplicate page schema; the theme still emits FAQPage schema from its FAQ rows.
+To make ongoing maintenance effortless without conditional tangles:
 
-The supplied HTML's visible static page FAQs remain as authored. If you later edit the separate Page FAQ schema rows, keep them synchronized with the visible FAQ copy.
+1. **Global Site (`header.php` + `footer.php`)**
+   - Used by Home, About, Contact, Products, all 8 Material pages, and Knowledge Center.
+   - Pulls primary menu items dynamically from **Appearance → Menus → Primary Menu**.
+   - Displays Abiroverseas LLC contact info (`info@abiroverseas.com`, `+1 (856) 523 3366`).
 
-## Enquiry forms
+2. **Bhavik Enterprises (`header-bhavik.php` + `footer-bhavik.php`)**
+   - Loaded via `get_header( 'bhavik' );` and `get_footer( 'bhavik' );` inside `template-bhavik-enterprises.php`.
+   - Keeps the **exact same visual header/footer layout and Abiroverseas logos** (`ABIR-Logo.png` & `Abir-Logo_white-textr-1.png`) as the global site.
+   - Uses clean in-page anchor navigation (`#bv-hero`, `#about`, `#products`, `#industries`, `#the-way`, `#faqs`, `#quick-enquiry`) so visitors stay on the Bhavik landing page.
+   - Displays Bhavik Enterprises' India details:
+     - **Address:** Village Barhat Bangar, Mandhana Bithoor Road, Kanpur – 209217, UP, India
+     - **Phone / WhatsApp:** `+91 7007049478`
+     - **Email:** `info@bhavikenterprises.com`
+     - **Our Presence:** **Head Office:** Kanpur | **Branches:** Mumbai, Mundra
 
-The supplied Home and HDPE enquiry forms now submit to WordPress `admin-post.php`. They validate a nonce and a honeypot, sanitize fields, email the submission to the WordPress **Administration Email Address**, and redirect back with a success/error message. The optional HDPE attachment allows the listed document/image formats up to 5 MB and is attached to the email from the temporary upload; it is not copied into the public media library.
+---
 
-Set a real destination under **Settings → General → Administration Email Address** and verify outgoing email on your host. A transactional SMTP plugin/service is recommended for reliable delivery. Replace the layout's “Add company email” / “Add contact number” contact placeholders before launch.
+## 5. Visual & UI Design System Conventions
 
-## Shared footer
+When editing or adding sections, follow these established design rules:
 
-Every page uses the same footer markup from `footer.php` and shared styling from `assets/css/site.css`. The footer markup is no longer duplicated inside the Home, About, HDPE, or Knowledge templates.
+- **All Buttons = Borderless 3D Orange Accent:** Every button across the theme (`.ab-btn`, `.ab-btn--blue`, `.ab-btn--outline`, `.ab-btn--light`, `.ab-contact-submit`, `.ab-range-card-cta`, `.kh-button`, `.kh-button-light`, `.kh-enquiry-button`, header quote button, footer CTA, and scroll-to-top) uses the orange accent gradient (`#ff9238 → #f58220 → #e26d0c`), white text, **`border: 0`**, and multi-layer 3D elevation shadows.
+- **Borderless 3D Image Cards:**
+  - **Bhavik "Industries We Serve"** (`#industries` in `bhavik.css`) uses a 3-column desktop / 2-column tablet / 1-column mobile borderless 3D pedestal card with a rounded 16:10 photo stage, frosted badge, and floating `#008080` icon box overlapping the image bottom.
+  - **Product Range** (`#ab-range-grid` in `products.css`) uses the same borderless 3D image-card craft in a **2×2 layout** (`repeat(2, minmax(0, 1fr))` on desktop & tablet, `1fr` on mobile), paired with a recessed borderless spec table and 3D orange CTA button, isolated strictly inside `products.css`.
+- **Bhavik FAQ Question Boxes:** Styled in `bhavik.css` (`.ab-faq-item`) with a tinted sage-mist 3D surface, left accent bar, 3D circular rotating trigger icon, and recessed white answer well so each question stands out against the white section background.
+- **Unified Icon Boxes:** Icon containers (`.ab-icon-box`, `.ab-contact-detail-icon`, `.ab-range-card-icon`) use the `#008080` teal palette on soft 3D surfaces.
+- **Clean Photography:** Banner and slider images do not render decorative circle/ring overlays on top of photography.
 
-## Implementation notes
+---
 
-- No WooCommerce or product CPT is registered.
-- Knowledge content and SEO/schema fields are managed with native WordPress post meta; no paid fields plugin is required.
-- Theme requires WordPress 6.0+ and PHP 7.4+.
+## 6. Forms & Lead Submission Flow
+
+All enquiry forms across **Home**, **Contact Us**, **all 8 Material pages**, and **Bhavik Enterprises** post securely to WordPress `admin-post.php` (`action=ab_material_enquiry`, handled in `functions.php`):
+
+1. Verifies WordPress nonce (`ab_material_enquiry_nonce`) and invisible honeypot (`ab_website`).
+2. Sanitizes all submitted fields (`name`, `company`, `email`, `phone`, `material`, `quantity`, `application`, `enquiry_kind`).
+3. Supports optional spec/datasheet file attachments up to 5 MB (`.pdf`, `.doc`, `.docx`, `.xls`, `.xlsx`, `.csv`, `.jpg`, `.jpeg`, `.png`) on Material forms without exposing uploads in the public Media Library.
+4. Sends formatted notification email to **Settings → General → Administration Email Address** and redirects back to the originating page with `?enquiry=sent` (or `?enquiry=error`).
+
+---
+
+## 7. Knowledge Center Architecture (`/knowledge/`)
+
+- **Custom Post Type:** `knowledge` (URL structure `/knowledge/{exact-slug}/`).
+- **Taxonomies:**
+  1. `knowledge_hub` — Material/topic hubs (HDPE, PP, LDPE / LLDPE, PVC, Recycled Polymers)
+  2. `knowledge_material` — Product Type / Material filter
+  3. `knowledge_topic` — Topic filter (Comparisons, FAQs, Grades & Selection, Processing Methods, Applications, Recycling & Sustainability)
+- **Structured Editor Fields (`functions.php`):** Custom native meta boxes let editors manage Exact URL Slug, SEO Title/Description, Direct Answer, 3-Column Comparison Table, Why Materials Differ, WordPress Block Editor extra content, When to Consider, FAQs (auto-generating `FAQPage` JSON-LD schema), Related Materials, and Article-End CTA — with zero paid plugin dependencies.
+
+---
+
+## 8. Installation & Quick Editing Guide
+
+### Installing the Theme
+1. Zip the `abiroverseas-theme/` directory (ensuring `style.css` is at the root of the archive).
+2. In WordPress Admin, go to **Appearance → Themes → Add New → Upload Theme**, upload the zip, and click **Activate**.
+3. Starter pages (`Home`, `About`, `HDPE`, `Product Families`, `Product Range`, `Bhavik Enterprises`) and the starter `Primary Menu` are created automatically without overwriting existing content.
+4. Visit **Settings → Permalinks** and click **Save Changes** once to flush `/knowledge/` rewrite rules.
+5. Ensure brand logo uploads exist at `/wp-content/uploads/2026/10/ABIR-Logo.png` and `/wp-content/uploads/2026/10/Abir-Logo_white-textr-1.png`.
+
+### Common Maintenance Tasks
+- **Edit Global Header / Menu / Footer:** Edit `header.php`, `footer.php`, or **Appearance → Menus → Primary Menu**.
+- **Edit Bhavik Header / Footer / Contact Info:** Edit `header-bhavik.php`, `footer-bhavik.php`, and the `$bv_*` variables at the top of `page-template/template-bhavik-enterprises.php`.
+- **Edit Styles Safely:** Open only the target page's CSS file in `assets/css/` (see the table in Section 3) and bump `AB_THEME_VERSION` in `functions.php` so browsers fetch the updated stylesheet immediately.
+- **Requirements:** WordPress 6.0+ and PHP 7.4+. No WooCommerce or ACF Pro required.

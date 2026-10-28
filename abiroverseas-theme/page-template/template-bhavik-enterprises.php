@@ -8,7 +8,7 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-get_header();
+get_header( 'bhavik' );
 
 $ab_contact_result = isset( $_GET['enquiry'] ) ? sanitize_key( wp_unslash( $_GET['enquiry'] ) ) : '';
 
@@ -16,7 +16,7 @@ $bv_phone     = '+91 7007049478';
 $bv_phone_raw = '+917007049478';
 $bv_whatsapp  = '917007049478';
 $bv_email     = 'info@bhavikenterprises.com';
-$bv_address   = '118/358 A Kaushalpuri, Gumti No. 5, Kanpur, Uttar Pradesh – 208012';
+$bv_address   = 'Village Barhat Bangar, Mandhana Bithoor Road, Kanpur – 209217, UP, India';
 
 $bv_products = array(
     array(
@@ -136,7 +136,7 @@ $bv_faqs = array(
     ),
 );
 ?>
-<main id="main-content" class="ab-contact-page ab-bhavik-page">
+<main id="main-content" class="ab-bhavik-page">
 
     <!-- 1. Hero -->
     <section class="ab-about-hero" id="bv-hero" aria-labelledby="bv-hero-title">
@@ -476,26 +476,31 @@ $bv_faqs = array(
                             </span>
                         </a>
 
-                        <div class="ab-contact-detail">
-                            <span class="ab-contact-detail-icon" aria-hidden="true">
-                                <svg class="ab-icon"><use href="#ab-icon-industry" /></svg>
-                            </span>
-                            <span>
-                                <small>Head office</small>
-                                <strong>Kanpur, Uttar Pradesh</strong>
-                                <em>Central North India hub</em>
-                            </span>
-                        </div>
+                        <div class="ab-bv-presence-block" aria-label="Our Presence">
+                            <span class="ab-bv-presence-title">Our Presence</span>
+                            <div class="ab-bv-presence-grid">
+                                <div class="ab-contact-detail">
+                                    <span class="ab-contact-detail-icon" aria-hidden="true">
+                                        <svg class="ab-icon"><use href="#ab-icon-industry" /></svg>
+                                    </span>
+                                    <span>
+                                        <small>Head Office</small>
+                                        <strong>Kanpur</strong>
+                                        <em>Central North India hub</em>
+                                    </span>
+                                </div>
 
-                        <div class="ab-contact-detail">
-                            <span class="ab-contact-detail-icon" aria-hidden="true">
-                                <svg class="ab-icon"><use href="#ab-icon-globe" /></svg>
-                            </span>
-                            <span>
-                                <small>Branch hubs</small>
-                                <strong>Mumbai · Mundra</strong>
-                                <em>Port-connected Western hubs</em>
-                            </span>
+                                <div class="ab-contact-detail">
+                                    <span class="ab-contact-detail-icon" aria-hidden="true">
+                                        <svg class="ab-icon"><use href="#ab-icon-globe" /></svg>
+                                    </span>
+                                    <span>
+                                        <small>Branches</small>
+                                        <strong>Mumbai, Mundra</strong>
+                                        <em>Port-connected Western hubs</em>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -565,4 +570,4 @@ $bv_faqs = array(
 
 </main>
 <?php
-get_footer();
+get_footer( 'bhavik' );

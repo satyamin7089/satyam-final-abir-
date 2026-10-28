@@ -178,63 +178,46 @@ p {
     margin: 0
 }
 
-.ab-btn {
+.ab-btn,
+.ab-btn--blue,
+.ab-btn--outline,
+.ab-btn--light {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     min-height: 52px;
-    padding: 13px 21px;
-    border: none;
-    border-radius: 12px;
-    background: var(--ab-orange);
-    color: #fff;
+    padding: 13px 22px;
+    border: 0 !important;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #ff9238 0%, #f58220 54%, #e26d0c 100%);
+    color: #ffffff !important;
     font-weight: 700;
     font-size: 17px;
     line-height: 1.2;
-    box-shadow: 0 4px 12px rgba(245, 130, 32, .18), 0 12px 28px rgba(245, 130, 32, .14);
-    transition: transform .22s ease, box-shadow .22s ease, background .22s ease, color .22s ease;
+    box-shadow: 0 3px 6px rgba(204, 92, 6, .22),
+        0 10px 24px rgba(245, 130, 32, .30),
+        0 20px 38px -8px rgba(245, 130, 32, .22),
+        inset 0 1px 0 rgba(255, 255, 255, .38),
+        inset 0 -2px 0 rgba(166, 72, 0, .24);
+    transition: transform .24s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .24s cubic-bezier(.22, 1, .36, 1),
+        background .24s ease;
     cursor: pointer
 }
 
-.ab-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(245, 130, 32, .22), 0 18px 36px rgba(245, 130, 32, .18);
-    background: #ff963b
-}
-
-.ab-btn--blue {
-    background: var(--ab-blue);
-    color: white;
-    box-shadow: 0 4px 12px rgba(29, 78, 159, .16), 0 12px 28px rgba(29, 78, 159, .12)
-}
-
-.ab-btn--blue:hover {
-    background: #153e82;
-    box-shadow: 0 6px 16px rgba(29, 78, 159, .22), 0 18px 36px rgba(29, 78, 159, .18)
-}
-
-.ab-btn--outline {
-       background: white;
-   color: var(--ab-blue); 
-  box-shadow: none;
-}
-
-.ab-btn--outline:hover {
-    background: #eff5fb;
-    box-shadow: none;
-    transform: translateY(-2px);
-}
-
-.ab-btn--light {
-    background: white;
-    color: var(--ab-blue);
-    box-shadow: var(--ab-3d-subtle)
-}
-
+.ab-btn:hover,
+.ab-btn--blue:hover,
+.ab-btn--outline:hover,
 .ab-btn--light:hover {
-    background: #eff5fb;
-    box-shadow: var(--ab-3d)
+    transform: translateY(-3px);
+    background: linear-gradient(180deg, #ff9d4b 0%, #ff8826 52%, #e87312 100%);
+    color: #ffffff !important;
+    box-shadow: 0 6px 12px rgba(204, 92, 6, .26),
+        0 16px 32px rgba(245, 130, 32, .38),
+        0 26px 48px -8px rgba(245, 130, 32, .28),
+        inset 0 1px 0 rgba(255, 255, 255, .46),
+        inset 0 -2px 0 rgba(150, 62, 0, .26)
 }
 
 .ab-btn svg,
@@ -1210,9 +1193,13 @@ box-shadow: 0 1px 4px rgba(245, 130, 32, .15);
 }
 
 .ab-faq-tab.is-active {
-    background: var(--ab-teal);
+    border: 0 !important;
+    background: linear-gradient(180deg, #ff9238 0%, #f58220 54%, #e26d0c 100%);
     color: #fff;
-    box-shadow: 0 4px 14px rgba(0, 128, 128, .22)
+    box-shadow: 0 3px 6px rgba(204, 92, 6, .20),
+        0 8px 18px rgba(245, 130, 32, .28),
+        inset 0 1px 0 rgba(255, 255, 255, .36),
+        inset 0 -2px 0 rgba(166, 72, 0, .22)
 }
 
 .ab-tab-count {
