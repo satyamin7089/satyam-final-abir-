@@ -2,7 +2,7 @@
 /** Abiroverseas — WordPress theme functions. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'AB_THEME_VERSION', '1.5.5' );
+define( 'AB_THEME_VERSION', '1.5.6' );
 
 /**
  * Determine whether the current request renders the Bhavik Enterprises page.
@@ -336,6 +336,112 @@ function ab_ensure_bhavik_page() {
     if ( ! get_post_meta( $page_id, 'ab_page_faqs', true ) && ! empty( $page_data['faqs'] ) ) { update_post_meta( $page_id, 'ab_page_faqs', $page_data['faqs'] ); }
 
     update_option( 'ab_bhavik_page_ready', 1 );
+}
+
+/**
+ * Ensure dedicated Material pages and the Contact Us page exist once on live sites
+ * without touching any existing page that already uses the template or slug.
+ */
+add_action( 'init', 'ab_ensure_material_and_contact_pages', 32 );
+function ab_ensure_material_and_contact_pages() {
+    if ( get_option( 'ab_material_contact_pages_v156_ready' ) ) { return; }
+
+    $pages = array(
+        array(
+            'slug'      => 'contact-us',
+            'title'     => 'Contact Us',
+            'template'  => 'page-template/template-contact.php',
+            'templates' => array( 'page-template/template-contact.php', 'page-templates/template-contact.php' ),
+        ),
+        array(
+            'slug'      => 'hdpe',
+            'title'     => 'High-Density Polyethylene (HDPE)',
+            'template'  => 'page-template/template-material.php',
+            'templates' => array( 'page-template/template-material.php', 'page-templates/template-material.php' ),
+        ),
+        array(
+            'slug'      => 'pp',
+            'title'     => 'Polypropylene (PP)',
+            'template'  => 'page-template/template-material-PP.php',
+            'templates' => array( 'page-template/template-material-PP.php', 'page-templates/template-material-PP.php' ),
+        ),
+        array(
+            'slug'      => 'ldpe',
+            'title'     => 'LDPE / LLDPE',
+            'template'  => 'page-template/template-material-LDPE.php',
+            'templates' => array( 'page-template/template-material-LDPE.php', 'page-templates/template-material-LDPE.php' ),
+        ),
+        array(
+            'slug'      => 'pvc',
+            'title'     => 'Polyvinyl Chloride (PVC)',
+            'template'  => 'page-template/template-material-PVC.php',
+            'templates' => array( 'page-template/template-material-PVC.php', 'page-templates/template-material-PVC.php' ),
+        ),
+        array(
+            'slug'      => 'ps',
+            'title'     => 'Polystyrene (PS)',
+            'template'  => 'page-template/template-material-PS.php',
+            'templates' => array( 'page-template/template-material-PS.php', 'page-templates/template-material-PS.php' ),
+        ),
+        array(
+            'slug'      => 'abs',
+            'title'     => 'Acrylonitrile Butadiene Styrene (ABS)',
+            'template'  => 'page-template/template-material-ABS.php',
+            'templates' => array( 'page-template/template-material-ABS.php', 'page-templates/template-material-ABS.php' ),
+        ),
+        array(
+            'slug'      => 'eva',
+            'title'     => 'Ethylene Vinyl Acetate (EVA)',
+            'template'  => 'page-template/template-material-EVA.php',
+            'templates' => array( 'page-template/template-material-EVA.php', 'page-templates/template-material-EVA.php' ),
+        ),
+        array(
+            'slug'      => 'recycled-plastics',
+            'title'     => 'Recycled & Reprocessed Plastics',
+            'template'  => 'page-template/template-material-Recycled-Plastics.php',
+            'templates' => array( 'page-template/template-material-Recycled-Plastics.php', 'page-templates/template-material-Recycled-Plastics.php' ),
+        ),
+    );
+
+    foreach ( $pages as $page_spec ) {
+        $existing_by_tpl = get_posts( array(
+            'post_type'      => 'page',
+            'post_status'    => array( 'publish', 'draft', 'private', 'pending' ),
+            'posts_per_page' => 1,
+            'fields'         => 'ids',
+            'no_found_rows'  => true,
+            'meta_query'     => array(
+                array(
+                    'key'     => '_wp_page_template',
+                    'value'   => $page_spec['templates'],
+                    'compare' => 'IN',
+                ),
+            ),
+        ) );
+        if ( ! empty( $existing_by_tpl ) ) {
+            continue;
+        }
+
+        $existing_by_slug = get_page_by_path( $page_spec['slug'], OBJECT, 'page' );
+        if ( $existing_by_slug ) {
+            if ( ! get_post_meta( $existing_by_slug->ID, '_wp_page_template', true ) ) {
+                update_post_meta( $existing_by_slug->ID, '_wp_page_template', $page_spec['template'] );
+            }
+            continue;
+        }
+
+        $new_page_id = wp_insert_post( array(
+            'post_type'   => 'page',
+            'post_status' => 'publish',
+            'post_title'  => $page_spec['title'],
+            'post_name'   => $page_spec['slug'],
+        ), true );
+        if ( ! is_wp_error( $new_page_id ) && $new_page_id ) {
+            update_post_meta( $new_page_id, '_wp_page_template', $page_spec['template'] );
+        }
+    }
+
+    update_option( 'ab_material_contact_pages_v156_ready', 1 );
 }
 
 function ab_primary_menu_fallback() {

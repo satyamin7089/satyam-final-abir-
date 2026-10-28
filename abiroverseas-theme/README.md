@@ -1,4 +1,4 @@
-# Abiroverseas Polymer Materials — WordPress Theme (`v1.5.5`)
+# Abiroverseas Polymer Materials — WordPress Theme (`v1.5.6`)
 
 A custom, lightweight classic WordPress theme (`abiroverseas-theme`) engineered for **Abiroverseas LLC** and its authorised India distributor landing page (**Bhavik Enterprises**).
 
@@ -140,7 +140,7 @@ When editing or adding sections, follow these established design rules:
 - **Unified Eyebrows & Equal-Height Split/Hero Images:** Every page (including Bhavik Enterprises) shares the exact `.ab-eyebrow` design (`17px` desktop/tablet-landscape, `15px` tablet portrait, `14px` mobile, `#008080` teal text or `#a8ded6` on dark sections, and a `24px × 2px` `#f58220` orange leading dash aligned to the first line) and stretches right-side banner/split image containers (`align-items: stretch` + `position: absolute; inset: 0` cover media) to equal the exact height of the left-side copy container on desktop and tablet landscape (`>= 1024px`).
 - **Borderless 3D Image Cards:**
   - **Bhavik "Industries We Serve"** (`#industries` in `bhavik.css`) uses a 3-column desktop / 2-column tablet / 1-column mobile borderless 3D pedestal card with a rounded 16:10 photo stage, frosted badge, and floating `#008080` icon box overlapping the image bottom.
-  - **Product Range** (`#ab-range-grid` in `products.css`) uses the same borderless 3D image-card craft in a **2×2 layout** (`repeat(2, minmax(0, 1fr))` on desktop & tablet, `1fr` on mobile), paired with a recessed borderless spec table and 3D orange CTA button, isolated strictly inside `products.css`.
+  - **Product Range** (`#ab-range-grid` in `products.css`) uses the same borderless 3D image-card craft in a **2×2 layout** (`repeat(2, minmax(0, 1fr))` on desktop & tablet, `1fr` on mobile), paired with a recessed borderless spec table and two separate 3D orange CTA buttons (`Explore <Material>` + `Enquire Now`) per card, isolated strictly inside `products.css`.
 - **Bhavik FAQ Question Boxes:** Styled in `bhavik.css` (`.ab-faq-item`) with a tinted sage-mist 3D surface, **no border and no left accent bar**, 3D circular rotating trigger icon, and recessed white answer well so each question stands out cleanly against the white section background.
 - **Unified Icon Boxes:** Icon containers (`.ab-icon-box`, `.ab-contact-detail-icon`, `.ab-range-card-icon`) use the `#008080` teal palette on soft 3D surfaces.
 - **Clean Photography:** Banner and slider images do not render decorative circle/ring overlays on top of photography.

@@ -1232,7 +1232,6 @@ body { margin: 0; }
     .ab-promise-cards,
     .ab-reach-stats,
     .ab-character-grid,
-    .ab-grade-cards,
     .ab-forms-grid,
     .ab-app-grid,
     .ab-industry-cards,
@@ -1324,8 +1323,7 @@ body { margin: 0; }
 
     /* Stacked media keeps a usable height without forcing equal rows. */
     .ab-story-visual,
-    .ab-credibility-visual,
-    .ab-overview-visual {
+    .ab-credibility-visual {
         min-height: 320px;
     }
 
@@ -1600,8 +1598,7 @@ body { margin: 0; }
 
     /* Section visuals follow the same 350px rule on phones. */
     .ab-story-visual,
-    .ab-credibility-visual,
-    .ab-overview-visual {
+    .ab-credibility-visual {
         height: 350px;
         min-height: 350px;
     }

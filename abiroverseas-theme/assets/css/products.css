@@ -568,24 +568,31 @@
 }
 
 .ab-range-card-foot {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 14px;
+    width: 100%;
+    margin-top: 22px;
 }
 
-/* Borderless 3D Orange Accent Button on each Product Range card */
+/* Separate Borderless 3D Orange Accent Buttons on each Product Range card */
 .ab-range-card-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 9px;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
     min-height: 48px;
-    padding: 12px 22px;
+    padding: 12px 16px;
     border: 0 !important;
     border-radius: 14px;
     background: linear-gradient(180deg, #ff9238 0%, #f58220 54%, #e26d0c 100%);
-    color: #ffffff;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    text-align: center;
+    cursor: pointer;
     font-size: 16px;
     font-weight: 700;
     line-height: 1.2;
@@ -599,7 +606,13 @@
         background .24s ease;
 }
 
+.ab-range-card-cta:focus-visible {
+    outline: 3px solid rgba(245, 130, 32, .72);
+    outline-offset: 3px;
+}
+
 .ab-range-card-cta .ab-icon {
+    flex: 0 0 17px;
     width: 17px;
     height: 17px;
     fill: none;
@@ -611,7 +624,7 @@
 
 @media (hover: hover) {
     .ab-range-card:hover {
-        transform: translateY(-8px);
+        transform: translateY(-6px);
         box-shadow: 0 6px 12px rgba(16, 38, 56, .06),
             0 22px 44px -8px rgba(16, 38, 56, .14),
             0 40px 76px -14px rgba(0, 128, 128, .20),
@@ -629,7 +642,8 @@
             inset 0 1px 2px #ffffff;
     }
 
-    .ab-range-card:hover .ab-range-card-cta {
+    .ab-range-card-cta:hover,
+    .ab-range-card-cta:focus-visible {
         transform: translateY(-2px);
         background: linear-gradient(180deg, #ff9d4b 0%, #ff8826 52%, #e87312 100%);
         box-shadow: 0 4px 8px rgba(180, 82, 8, .13),
@@ -813,19 +827,11 @@
     .ab-products-section-head h2 { font-size: clamp(30px, 8vw, 36px); }
 }
 
-/* Detailed product-range cards: the transparent link covers the whole card. */
+@media (max-width: 960px) {
+    .ab-range-card-foot {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+    }
+}
+
 .ab-product-range-page .ab-range-card { position: relative; }
-.ab-products-page.ab-product-range-page .ab-range-card-click {
-    position: absolute;
-    z-index: 4;
-    inset: 0;
-    display: block;
-    overflow: hidden;
-    border-radius: inherit;
-    color: inherit;
-    text-decoration: none;
-}
-.ab-products-page.ab-product-range-page .ab-range-card-click:focus-visible {
-    outline: 3px solid var(--ab-orange, #F58220);
-    outline-offset: 3px;
-}
