@@ -457,3 +457,58 @@
     .ab-contact-page .ab-contact-form .ab-field select,
     .ab-contact-page .ab-contact-form .ab-field textarea { font-size: 16px; }
 }
+/* ==========================================================================
+   Social icon card in the Contact page sidebar (single card, all social
+   icons) — added below the "Call us" card.
+   ========================================================================== */
+
+.ab-contact-page .ab-contact-detail--social {
+    align-items: center;
+    gap: 12px;
+}
+
+.ab-contact-page .ab-contact-social {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 9px;
+    margin-left: auto;
+}
+
+.ab-contact-page .ab-contact-social .ab-social-link {
+    display: inline-grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border-radius: 12px;
+    background: #e4f1ef;
+    color: var(--ab-teal, #008080);
+    box-shadow: 0 4px 10px rgba(22, 44, 62, .06), inset 0 0 0 1px rgba(0, 128, 128, .10);
+    transition: transform .22s ease, background .22s ease, color .22s ease, box-shadow .22s ease;
+}
+
+.ab-contact-page .ab-contact-social .ab-social-link svg {
+    display: block;
+    width: 19px;
+    height: 19px;
+}
+
+.ab-contact-page .ab-contact-social .ab-social-link:hover,
+.ab-contact-page .ab-contact-social .ab-social-link:focus-visible {
+    transform: translateY(-2px);
+    background: linear-gradient(180deg, #ff9238 0%, #f58220 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 16px rgba(245, 130, 32, .28), inset 0 0 0 1px rgba(255, 255, 255, .28);
+}
+
+.ab-contact-page .ab-contact-social .ab-social-link:focus-visible {
+    outline: 2px solid var(--ab-teal, #008080);
+    outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+    .ab-contact-page .ab-contact-social {
+        width: 100%;
+        margin-left: 0;
+    }
+}

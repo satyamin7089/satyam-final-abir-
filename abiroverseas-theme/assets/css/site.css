@@ -2137,3 +2137,68 @@ body { margin: 0; }
 .ab-promise-grid > .ab-promise-list {
     margin-top: 0;
 }
+
+/* ==========================================================================
+   Footer additions — social icons (Abiroverseas + Bhavik) and the WhatsApp
+   scanner image under the "Request a quote" button. Styles are scoped to the
+   shared footer so both footer.php and footer-bhavik.php use them.
+   ========================================================================== */
+
+.ab-footer-social {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 2px 0;
+}
+
+.ab-footer-social .ab-social-link {
+    display: inline-grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .07);
+    color: #c6d5d9;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14);
+    transition: transform .22s ease, background .22s ease, color .22s ease, box-shadow .22s ease;
+}
+
+.ab-footer-social .ab-social-link svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+}
+
+.ab-footer-social .ab-social-link:hover,
+.ab-footer-social .ab-social-link:focus-visible {
+    transform: translateY(-2px);
+    background: linear-gradient(180deg, #ff9238 0%, #f58220 100%);
+    color: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .24), 0 8px 18px rgba(0, 0, 0, .28);
+}
+
+.ab-footer-social .ab-social-link:focus-visible {
+    outline: 2px solid #75cbc0;
+    outline-offset: 3px;
+}
+
+.ab-footer-qr {
+    margin: 12px 0 0;
+}
+
+.ab-footer-qr img {
+    display: block;
+    width: 132px;
+    height: 132px;
+    max-width: 100%;
+    padding: 8px;
+    border-radius: 14px;
+    background: #ffffff;
+    object-fit: contain;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .25);
+}
+
+.ab-footer-qr.qr-missing {
+    display: none;
+}
