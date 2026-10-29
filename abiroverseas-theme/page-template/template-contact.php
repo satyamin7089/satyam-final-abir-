@@ -115,6 +115,12 @@ height="18">
                         </span>
                         <span><small>Call us</small><strong>+1 (856) 523 3366</strong><em>Speak with our team</em></span>
                     </a>
+                    <div class="ab-contact-detail ab-contact-detail--social">
+                        <span class="ab-contact-detail-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"><circle cx="17.5" cy="6" r="2.6" stroke="currentColor" stroke-width="1.7"/><circle cx="6.5" cy="12" r="2.6" stroke="currentColor" stroke-width="1.7"/><circle cx="17.5" cy="18" r="2.6" stroke="currentColor" stroke-width="1.7"/><path d="m8.9 10.7 6.2-3.4M8.9 13.3l6.2 3.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                        </span>
+                        <?php ab_social_icon_links( 'ab-contact-social', 'Abiroverseas on social media' ); ?>
+                    </div>
                     <div class="ab-contact-aside-note"><span class="ab-contact-note-dot" aria-hidden="true"></span><p>Helpful details include material type, grade, required form, application, approximate quantity, and destination.</p></div>
                     <div class="ab-contact-aside-decoration" aria-hidden="true"><span></span><span></span><span></span></div>
                 </aside>

@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
           <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/10/BE-footer-logo.png' ) ); ?>" alt="Abiroverseas logo" onerror="this.hidden=true;this.parentElement.classList.add('logo-missing')">
         </a>
         <p>Authorised distributor of Abiroverseas LLC in India — Village Barhat Bangar, Mandhana Bithoor Road, Kanpur – 209217, UP, India. Head Office: Kanpur · Branches: Mumbai, Mundra.</p>
+        <?php ab_social_icon_links( 'ab-footer-social', 'Bhavik Enterprises on social media' ); ?>
         <div class="ab-footer-contact">
           <span>
             <svg class="ab-icon" aria-hidden="true"><use href="#ab-icon-mail" /></svg>

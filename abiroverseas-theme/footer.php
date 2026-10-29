@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
           <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/10/Abir-Logo_white-textr-1.png' ) ); ?>" alt="Abiroverseas logo" onerror="this.hidden=true;this.parentElement.classList.add('logo-missing')">
         </a>
         <p>Plastic raw materials for industrial applications. Share the specification and delivery requirement for review.</p>
+        <?php ab_social_icon_links( 'ab-footer-social', 'Abiroverseas on social media' ); ?>
         <div class="ab-footer-contact">
           <span>
             <svg class="ab-icon" aria-hidden="true"><use href="#ab-icon-mail" /></svg>
@@ -61,6 +62,9 @@ height="18">
         <strong>Have a material requirement?</strong>
         <p>Start with the material, process and application details you know.</p>
         <a class="ab-btn" href="<?php echo esc_url( home_url( '/#quick-enquiry' ) ); ?>">REQUEST A QUOTE <svg class="ab-icon" aria-hidden="true"><use href="#ab-icon-arrow" /></svg></a>
+        <figure class="ab-footer-qr">
+          <img src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/10/whatsapp-qr-abiroverseas.png' ) ); ?>" alt="WhatsApp QR code to start a chat with the Abiroverseas team" width="132" height="132" loading="lazy" decoding="async" onerror="this.hidden=true;this.parentElement.classList.add('qr-missing')">
+        </figure>
       </div>
     </div>
     <div class="ab-footer-bottom">

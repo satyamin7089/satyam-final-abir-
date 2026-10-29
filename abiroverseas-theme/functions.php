@@ -500,10 +500,77 @@ function ab_page_seo_metabox( $post ) {
     echo '<p>These fields apply to this Page only. The active Home, About and HDPE templates keep the supplied HTML layout; edit these metadata/schema fields here.</p>';
     echo '<p><label for="ab_meta_title"><strong>SEO title</strong></label><br><input class="widefat" id="ab_meta_title" name="ab_meta_title" maxlength="255" value="' . esc_attr( $title ) . '"></p>';
     echo '<p><label for="ab_meta_description"><strong>Meta description</strong></label><br><textarea class="widefat" rows="3" maxlength="320" id="ab_meta_description" name="ab_meta_description">' . esc_textarea( $desc ) . '</textarea></p>';
+    ab_render_social_image_field( $post->ID );
     echo '<p><label for="ab_schema_type"><strong>Page schema type</strong></label><br><select name="ab_schema_type" id="ab_schema_type">';
     foreach ( array( 'WebPage', 'AboutPage', 'ContactPage', 'CollectionPage' ) as $type ) { echo '<option value="' . esc_attr( $type ) . '" ' . selected( $schema, $type, false ) . '>' . esc_html( $type ) . '</option>'; }
     echo '</select> <span class="description">FAQPage schema is created from the question-and-answer rows below.</span></p>';
     ab_render_repeater( 'ab_page_faqs_json', $faqs, 'Page FAQs (used for FAQPage schema)', array( 'question' => 'Question', 'answer' => 'Answer' ), 'Add FAQ' );
+}
+/**
+ * Per-page social share image picker (og:image / twitter:image).
+ * The stored URL is used before the Featured image, which is the fallback.
+ */
+function ab_render_social_image_field( $post_id ) {
+    $image_url = (string) get_post_meta( $post_id, 'ab_og_image', true );
+    $image_id  = (int) get_post_meta( $post_id, 'ab_og_image_id', true );
+    $preview   = $image_url ? '<img src="' . esc_url( $image_url ) . '" alt="" style="display:block;max-width:260px;height:auto;border-radius:6px;">' : '';
+    echo '<div class="ab-og-field" style="margin:0 0 18px;">';
+    echo '<p style="margin:0 0 6px;"><strong>Social share image (og:image &amp; twitter:image)</strong></p>';
+    echo '<input type="hidden" data-ab-og-input name="ab_og_image" value="' . esc_attr( $image_url ) . '">';
+    echo '<input type="hidden" data-ab-og-id name="ab_og_image_id" value="' . esc_attr( $image_id ? $image_id : '' ) . '">';
+    echo '<div data-ab-og-preview>' . $preview . '</div>';
+    echo '<p><button type="button" class="button" data-ab-og-pick>Select share image</button> <button type="button" class="button-link-delete" data-ab-og-clear>Remove</button></p>';
+    echo '<p class="description">This page’s own image for Open Graph and Twitter cards. Leave empty to use the Featured image.</p>';
+    echo '</div>';
+}
+add_action( 'admin_print_footer_scripts', 'ab_social_image_admin_script' );
+function ab_social_image_admin_script() {
+    $screen = get_current_screen();
+    if ( ! $screen || 'post' !== $screen->base || 'page' !== $screen->post_type ) { return; }
+    wp_enqueue_media();
+    ?>
+    <script>
+    ( function () {
+        document.addEventListener( 'click', function ( event ) {
+            var pick = event.target.closest( '[data-ab-og-pick]' );
+            var clear = event.target.closest( '[data-ab-og-clear]' );
+            if ( ! pick && ! clear ) { return; }
+            event.preventDefault();
+            var field = ( pick || clear ).closest( '.ab-og-field' );
+            if ( ! field ) { return; }
+            var input = field.querySelector( '[data-ab-og-input]' );
+            var idInput = field.querySelector( '[data-ab-og-id]' );
+            var preview = field.querySelector( '[data-ab-og-preview]' );
+            if ( clear ) {
+                input.value = '';
+                idInput.value = '';
+                preview.innerHTML = '';
+                return;
+            }
+            if ( ! window.wp || ! wp.media ) { return; }
+            var frame = wp.media( {
+                title: 'Choose the social share image',
+                button: { text: 'Use this image' },
+                library: { type: 'image' },
+                multiple: false
+            } );
+            frame.on( 'select', function () {
+                var attachment = frame.state().get( 'selection' ).first().toJSON();
+                input.value = attachment.url;
+                idInput.value = attachment.id;
+                var thumb = attachment.sizes && attachment.sizes.medium ? attachment.sizes.medium.url : attachment.url;
+                preview.innerHTML = '';
+                var img = document.createElement( 'img' );
+                img.src = thumb;
+                img.alt = '';
+                img.style.cssText = 'display:block;max-width:260px;height:auto;border-radius:6px;';
+                preview.appendChild( img );
+            } );
+            frame.open();
+        } );
+    } )();
+    </script>
+    <?php
 }
 function ab_knowledge_metabox( $post ) {
     wp_nonce_field( 'ab_knowledge_save', 'ab_knowledge_nonce' );
@@ -683,6 +750,8 @@ function ab_save_page_meta( $post_id, $post ) {
     update_post_meta( $post_id, 'ab_schema_type', in_array( $schema, $allowed, true ) ? $schema : 'WebPage' );
     $faqs = ab_decode_rows( 'ab_page_faqs_json', array( 'question', 'answer' ) );
     update_post_meta( $post_id, 'ab_page_faqs', $faqs );
+    update_post_meta( $post_id, 'ab_og_image', isset( $_POST['ab_og_image'] ) && is_scalar( $_POST['ab_og_image'] ) ? esc_url_raw( wp_unslash( $_POST['ab_og_image'] ) ) : '' );
+    update_post_meta( $post_id, 'ab_og_image_id', isset( $_POST['ab_og_image_id'] ) && is_scalar( $_POST['ab_og_image_id'] ) ? absint( wp_unslash( $_POST['ab_og_image_id'] ) ) : 0 );
 }
 add_action( 'save_post_knowledge', 'ab_save_knowledge_meta', 10, 2 );
 function ab_save_knowledge_meta( $post_id, $post ) {
@@ -721,6 +790,8 @@ function ab_knowledge_admin_assets( $hook ) {
     if ( ! in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) { return; }
     $screen = get_current_screen();
     if ( ! $screen || ! in_array( $screen->post_type, array( 'knowledge', 'page' ), true ) ) { return; }
+    // The page SEO box uses the media library to pick the social share image.
+    if ( 'page' === $screen->post_type ) { wp_enqueue_media(); }
     wp_enqueue_style( 'ab-admin-knowledge', get_template_directory_uri() . '/assets/css/knowledge-admin.css', array(), AB_THEME_VERSION );
     wp_enqueue_script( 'ab-admin-knowledge', get_template_directory_uri() . '/assets/js/knowledge-admin.js', array(), AB_THEME_VERSION, true );
 }
@@ -902,6 +973,125 @@ function ab_output_seo_and_schema() {
     echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . '</script>' . "\n";
 }
 
+/**
+ * Resolve the social share image for a page: page-level share image first,
+ * then the WordPress Featured image. Returns url, width, height and alt text.
+ */
+function ab_social_share_image( $post_id = 0 ) {
+    $post_id = $post_id ? (int) $post_id : (int) get_queried_object_id();
+    $image   = array( 'url' => '', 'width' => 0, 'height' => 0, 'alt' => '' );
+    if ( ! $post_id ) { return $image; }
+
+    $image_id = (int) get_post_meta( $post_id, 'ab_og_image_id', true );
+    $image_url = (string) get_post_meta( $post_id, 'ab_og_image', true );
+
+    if ( ! $image_url && has_post_thumbnail( $post_id ) ) {
+        $image_id = (int) get_post_thumbnail_id( $post_id );
+    }
+    if ( $image_id ) {
+        $src = wp_get_attachment_image_src( $image_id, 'full' );
+        if ( $src && ! empty( $src[0] ) ) {
+            $image = array(
+                'url'    => $src[0],
+                'width'  => (int) $src[1],
+                'height' => (int) $src[2],
+                'alt'    => (string) get_post_meta( $image_id, '_wp_attachment_image_alt', true ),
+            );
+        }
+    }
+    if ( ! $image['url'] && $image_url ) {
+        $image['url'] = $image_url;
+    }
+    if ( ! $image['url'] && has_post_thumbnail( $post_id ) ) {
+        $image['url'] = (string) get_the_post_thumbnail_url( $post_id, 'full' );
+    }
+    if ( ! $image['alt'] ) { $image['alt'] = get_the_title( $post_id ); }
+    return $image;
+}
+
+/** Let SEO plugins reuse the same per-page share image when one is installed. */
+add_filter( 'wpseo_opengraph_image', 'ab_plugin_social_share_image' );
+add_filter( 'wpseo_twitter_image', 'ab_plugin_social_share_image' );
+add_filter( 'rank_math/opengraph/facebook/image', 'ab_plugin_social_share_image' );
+add_filter( 'rank_math/opengraph/twitter/image', 'ab_plugin_social_share_image' );
+function ab_plugin_social_share_image( $image ) {
+    if ( ! is_singular() ) { return $image; }
+    $share = ab_social_share_image( get_queried_object_id() );
+    return $share['url'] ? $share['url'] : $image;
+}
+
+/**
+ * Open Graph + Twitter Card tags. The page SEO title and meta description are
+ * reused as og/twitter title and description; the image is the page's own
+ * share image with the Featured image as fallback.
+ */
+add_action( 'wp_head', 'ab_output_social_meta', 4 );
+function ab_output_social_meta() {
+    if ( ab_has_seo_plugin() || is_admin() || is_feed() ) { return; }
+
+    $title       = '';
+    $description = '';
+    $url         = '';
+    $type        = 'website';
+    $image       = array( 'url' => '', 'width' => 0, 'height' => 0, 'alt' => '' );
+
+    if ( is_404() ) {
+        $title = 'Page Not Found (404) | Abiroverseas';
+    } elseif ( is_post_type_archive( 'knowledge' ) ) {
+        $title       = ab_knowledge_archive_title();
+        $description = ab_knowledge_archive_description();
+        $url         = get_post_type_archive_link( 'knowledge' );
+    } elseif ( is_tax( array( 'knowledge_hub', 'knowledge_material', 'knowledge_topic' ) ) ) {
+        $term        = get_queried_object();
+        $name        = $term && isset( $term->name ) ? $term->name : 'Knowledge Center';
+        $title       = $name . ' | Knowledge Center | Abiroverseas';
+        $description = $term && ! empty( $term->description ) ? wp_strip_all_tags( $term->description ) : 'Knowledge Center resources and material guidance for ' . $name . '.';
+        $term_link   = $term ? get_term_link( $term ) : '';
+        $url         = is_wp_error( $term_link ) ? '' : (string) $term_link;
+    } elseif ( is_singular() ) {
+        $id          = get_queried_object_id();
+        $title       = get_post_meta( $id, 'ab_meta_title', true );
+        if ( ! $title ) { $title = get_the_title( $id ); }
+        $description = get_post_meta( $id, 'ab_meta_description', true );
+        if ( ! $description ) { $description = wp_strip_all_tags( get_the_excerpt( $id ) ); }
+        $url         = get_permalink( $id );
+        $type        = 'knowledge' === get_post_type( $id ) ? 'article' : 'website';
+        $image       = ab_social_share_image( $id );
+    } else {
+        $title = wp_get_document_title();
+    }
+
+    $title       = trim( wp_strip_all_tags( (string) $title ) );
+    $description = trim( wp_strip_all_tags( (string) $description ) );
+
+    echo "\n<!-- Abiroverseas social share tags -->\n";
+    echo '<meta property="og:site_name" content="' . esc_attr( get_bloginfo( 'name' ) ) . '">' . "\n";
+    echo '<meta property="og:locale" content="' . esc_attr( get_locale() ) . '">' . "\n";
+    echo '<meta property="og:type" content="' . esc_attr( $type ) . '">' . "\n";
+    if ( $url ) { echo '<meta property="og:url" content="' . esc_url( $url ) . '">' . "\n"; }
+    if ( $title ) {
+        echo '<meta property="og:title" content="' . esc_attr( $title ) . '">' . "\n";
+        echo '<meta name="twitter:title" content="' . esc_attr( $title ) . '">' . "\n";
+    }
+    if ( $description ) {
+        echo '<meta property="og:description" content="' . esc_attr( $description ) . '">' . "\n";
+        echo '<meta name="twitter:description" content="' . esc_attr( $description ) . '">' . "\n";
+    }
+    if ( ! empty( $image['url'] ) ) {
+        echo '<meta property="og:image" content="' . esc_url( $image['url'] ) . '">' . "\n";
+        if ( $image['width'] && $image['height'] ) {
+            echo '<meta property="og:image:width" content="' . esc_attr( $image['width'] ) . '">' . "\n";
+            echo '<meta property="og:image:height" content="' . esc_attr( $image['height'] ) . '">' . "\n";
+        }
+        if ( $image['alt'] ) { echo '<meta property="og:image:alt" content="' . esc_attr( $image['alt'] ) . '">' . "\n"; }
+        echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+        echo '<meta name="twitter:image" content="' . esc_url( $image['url'] ) . '">' . "\n";
+        if ( $image['alt'] ) { echo '<meta name="twitter:image:alt" content="' . esc_attr( $image['alt'] ) . '">' . "\n"; }
+    } else {
+        echo '<meta name="twitter:card" content="summary">' . "\n";
+    }
+}
+
 /** Convert author-provided internal site paths to absolute, safe home URLs. */
 function ab_home_anchor_url( $id ) {
     $id = sanitize_html_class( $id );
@@ -918,4 +1108,39 @@ function ab_knowledge_article_url( $slug ) {
     if ( $article && 'publish' === $article->post_status ) { return get_permalink( $article ); }
     $archive = get_post_type_archive_link( 'knowledge' );
     return $archive ? $archive : home_url( '/knowledge/' );
+}
+/**
+ * Social profiles used by the footer icons and the Contact page social card.
+ * Replace the placeholder URLs with the live profile URLs. A URL left empty
+ * is skipped, so the remaining icons stay aligned.
+ */
+function ab_social_links() {
+    return apply_filters( 'ab_social_links', array(
+        array( 'key' => 'facebook',  'label' => 'Facebook',  'url' => 'https://www.facebook.com/' ),
+        array( 'key' => 'linkedin',  'label' => 'LinkedIn',  'url' => 'https://www.linkedin.com/' ),
+        array( 'key' => 'instagram', 'label' => 'Instagram', 'url' => 'https://www.instagram.com/' ),
+    ) );
+}
+
+/** Inline SVG artwork (24×24, fill = currentColor) for each social network. */
+function ab_social_icon_svg( $key ) {
+    $paths = array(
+        'facebook' => 'M24 12.073C24 5.446 18.627 0 12 0S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073Z',
+        'linkedin' => 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286ZM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124Zm1.782 13.019H3.555V9h3.564v11.452ZM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003Z',
+        'instagram' => 'M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0Zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03Zm0 3.678a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm7.846-10.405a1.441 1.441 0 1 1-2.88 0 1.441 1.441 0 0 1 2.88 0Z',
+    );
+    if ( ! isset( $paths[ $key ] ) ) { return ''; }
+    return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="' . esc_attr( $paths[ $key ] ) . '" fill="currentColor"/></svg>';
+}
+
+/** Print the social icon links (no heading) for the footer and Contact card. */
+function ab_social_icon_links( $class = 'ab-social-icons', $aria_label = 'Abiroverseas on social media' ) {
+    $links = ab_social_links();
+    $html  = '';
+    foreach ( $links as $link ) {
+        if ( empty( $link['url'] ) ) { continue; }
+        $html .= '<a class="ab-social-link ab-social-link--' . esc_attr( $link['key'] ) . '" href="' . esc_url( $link['url'] ) . '" target="_blank" rel="noopener noreferrer" aria-label="' . esc_attr( $link['label'] ) . '" title="' . esc_attr( $link['label'] ) . '">' . ab_social_icon_svg( $link['key'] ) . '</a>';
+    }
+    if ( '' === $html ) { return; }
+    echo '<div class="' . esc_attr( $class ) . '" role="group" aria-label="' . esc_attr( $aria_label ) . '">' . $html . '</div>';
 }
