@@ -53,11 +53,23 @@ if ( isset( $_GET['topic'] ) && is_scalar( $_GET['topic'] ) ) {
                 <div class="ab-contact-hero-meta">
                     <a href="mailto:info@abiroverseas.com"><span class="ab-contact-meta-mark" aria-hidden="true">✉</span><span><strong>Email us</strong><small>info@abiroverseas.com</small></span></a>
                     <a href="tel:+18565233366"><span class="ab-contact-meta-mark ab-contact-meta-mark--orange" aria-hidden="true">↗</span><span><strong>Call our team</strong><small>+1 (856) 523 3366</small></span></a>
-                    <a class="ab-contact-meta-item ab-contact-meta-item--whatsapp" href="https://wa.me/18565233366" target="_blank" rel="noopener noreferrer"><span class="ab-contact-meta-mark ab-contact-meta-mark--whatsapp" aria-hidden="true"><svg class="ab-icon"><use href="#ab-icon-whatsapp" /></svg></span><span><strong>WhatsApp</strong><small>+1 (856) 523 3366</small></span></a>
+                    <a class="ab-contact-meta-item ab-contact-meta-item--whatsapp" href="https://wa.me/18565233366" target="_blank" rel="noopener noreferrer"><span class="ab-contact-meta-mark ab-contact-meta-mark--whatsapp" aria-hidden="true"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720"
+width="18"
+height="18">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #00ac55;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M360,0C161.18,0,0,161.18,0,360c0,65.41,17.45,126.75,47.94,179.61L0,720l187.02-44.21c51.34,28.18,110.28,44.21,172.98,44.21,198.82,0,360-161.18,360-360S558.82,0,360,0ZM360,655.52c-60.17,0-116.13-17.98-162.82-48.87l-110.49,28.14,30.99-105.61c-33.53-47.93-53.2-106.26-53.2-169.19,0-163.21,132.31-295.52,295.52-295.52s295.52,132.31,295.52,295.52-132.31,295.52-295.52,295.52Z"/>
+  <path class="cls-1" d="M444.35,407.52l87.1,41.06c4,1.88,6.56,5.94,6.2,10.34-.94,11.46-5.54,34.43-26.13,55.02-58.12,58.12-162.49-7.64-166.74-10.18-25.67-13.79-50.06-32.24-73.19-55.36-23.12-23.12-41.58-47.52-55.37-73.19-2.55-4.24-68.31-108.61-10.18-166.74,20.59-20.59,43.56-25.19,55.02-26.13,4.41-.36,8.46,2.2,10.34,6.2l41.07,87.1c1.94,4.12,1.09,9.02-2.13,12.24l-30.61,30.61c-6.62,6.62-8.56,16.93-4,25.11,11.17,20.03,26.19,39.32,43.59,57.07,17.75,17.4,37.04,32.43,57.07,43.59,8.18,4.56,18.48,2.62,25.11-4l30.61-30.61c3.22-3.22,8.12-4.08,12.24-2.13Z"/>
+</svg></span><span><strong>WhatsApp</strong><small>+1 (856) 523 3366</small></span></a>
                 </div>
             </div>
             <div class="ab-contact-hero-art" role="img" aria-label="Close-up of industrial polymer resin pellets and flowing material forms">
-                <img class="ab-contact-hero-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/10/Industrial-Resin-Pellets-and-Flowing-Waves.png' ) ); ?>" alt="Industrial resin pellets and flowing polymer forms" width="900" height="700" fetchpriority="high">
+                <img class="ab-contact-hero-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/10/Frame-3.jpg' ) ); ?>" alt="Industrial resin pellets and flowing polymer forms" width="900" height="700" fetchpriority="high">
                 <span class="ab-contact-art-tag">Materials · forms · applications</span>
                 <div class="ab-contact-art-caption"><span class="ab-contact-caption-dot" aria-hidden="true"></span><span><small>Start with your requirement</small><strong>Find the right material conversation.</strong></span></div>
             </div>
@@ -87,7 +99,7 @@ if ( isset( $_GET['topic'] ) && is_scalar( $_GET['topic'] ) ) {
             <div class="ab-contact-layout">
                 <aside class="ab-contact-aside" aria-label="Contact information">
                     <div class="ab-contact-aside-heading">
-                        <span class="ab-contact-kicker">A clear starting point</span>
+               <!--         <span class="ab-contact-kicker">A clear starting point</span>-->
                         <h3>Let’s make your material enquiry easier.</h3>
                         <p>Whether you have a detailed specification or are still exploring options, share what you know and we’ll help clarify the next step.</p>
                     </div>
@@ -114,7 +126,7 @@ if ( isset( $_GET['topic'] ) && is_scalar( $_GET['topic'] ) ) {
                     <label class="ab-honeypot" aria-hidden="true">Leave this field empty<input type="text" name="ab_website" tabindex="-1" autocomplete="off"></label>
 
                     <div class="ab-contact-form-heading">
-                        <span class="ab-contact-step">01 <i aria-hidden="true"></i> YOUR DETAILS</span>
+                      <!--  <span class="ab-contact-step">01 <i aria-hidden="true"></i> YOUR DETAILS</span>-->
                         <h3>Send us your enquiry</h3>
                         <p>Fields marked with an asterisk are required.</p>
                     </div>
