@@ -2,7 +2,7 @@
 /** Abiroverseas — WordPress theme functions. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'AB_THEME_VERSION', '1.5.7' );
+define( 'AB_THEME_VERSION', '1.6.0' );
 
 /**
  * Determine whether the current request renders the Bhavik Enterprises page.
@@ -127,8 +127,13 @@ function ab_enqueue_assets() {
             // Keep Contact page styling isolated in its own stylesheet.
             $styles = array( 'contact.css' );
         } elseif ( ab_is_bhavik_page() ) {
-            // Keep Bhavik Enterprises 100% isolated in its own dedicated stylesheet and script.
-            $styles = array( 'bhavik.css' );
+            /*
+             * The Bhavik page is assembled from the About and Contact page
+             * components, so it must load exactly the same stylesheets those
+             * pages load. Loading only bhavik.css left most sections unstyled
+             * (.ab-promise-grid / .ab-contact-layout / .ab-reveal live here).
+             */
+            $styles = array( 'about.css', 'contact.css' );
             $script = 'bhavik.js';
         } elseif (
             in_array( $slug, array( 'recycled-plastics', 'ps', 'abs', 'eva', 'pvc', 'pp', 'ldpe', 'hdpe', 'material', 'materials' ), true )
