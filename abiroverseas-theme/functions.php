@@ -15,9 +15,38 @@ function ab_is_bhavik_page() {
     $slug     = $page_id ? get_post_field( 'post_name', $page_id ) : '';
     $template = $page_id ? get_page_template_slug( $page_id ) : '';
 
+    // Any slug that starts with "bhavik" (bhavik, bhavik-enterprises, …) is the Bhavik page.
+    if ( $slug && 0 === strpos( (string) $slug, 'bhavik' ) ) {
+        return true;
+    }
+
     return 'bhavik-enterprises' === $slug
         || in_array( $template, array( 'page-template/template-bhavik-enterprises.php', 'page-templates/template-bhavik-enterprises.php' ), true )
         || is_page_template( array( 'page-template/template-bhavik-enterprises.php', 'page-templates/template-bhavik-enterprises.php' ) );
+}
+
+/**
+ * Guarantee the Bhavik Enterprises layout is rendered.
+ * WordPress picks a template from the page meta; when that meta is empty, points
+ * at a removed file, or a builder has taken over, the page falls back to
+ * page.php and shows no Bhavik content. This loads the template directly for
+ * any Bhavik page so the supplied layout always appears on the front end.
+ */
+add_filter( 'template_include', 'ab_force_bhavik_template', 99 );
+function ab_force_bhavik_template( $template ) {
+    if ( is_admin() || ! ab_is_bhavik_page() ) {
+        return $template;
+    }
+    $candidates = array(
+        get_template_directory() . '/page-template/template-bhavik-enterprises.php',
+        get_template_directory() . '/page-templates/template-bhavik-enterprises.php',
+        get_stylesheet_directory() . '/page-template/template-bhavik-enterprises.php',
+        get_stylesheet_directory() . '/page-templates/template-bhavik-enterprises.php',
+    );
+    foreach ( $candidates as $candidate ) {
+        if ( file_exists( $candidate ) ) { return $candidate; }
+    }
+    return $template;
 }
 
 add_action( 'after_setup_theme', 'ab_theme_setup' );
@@ -399,7 +428,7 @@ function ab_repair_page_template( $page_id, $desired = '' ) {
 /** One-time sweep that repairs stale page-template paths written by older builds. */
 add_action( 'init', 'ab_repair_stale_page_templates', 41 );
 function ab_repair_stale_page_templates() {
-    if ( get_option( 'ab_page_templates_repaired_v1' ) ) { return; }
+    if ( get_option( 'ab_page_templates_repaired_v2' ) ) { return; }
     $pages = get_posts( array(
         'post_type'      => 'page',
         'post_status'    => 'any',
@@ -408,9 +437,15 @@ function ab_repair_stale_page_templates() {
         'no_found_rows'  => true,
     ) );
     foreach ( $pages as $page_id ) {
-        ab_repair_page_template( (int) $page_id );
+        $page_id = (int) $page_id;
+        $slug    = (string) get_post_field( 'post_name', $page_id );
+        if ( 0 === strpos( $slug, 'bhavik' ) ) {
+            ab_repair_page_template( $page_id, 'page-template/template-bhavik-enterprises.php' );
+            continue;
+        }
+        ab_repair_page_template( $page_id );
     }
-    update_option( 'ab_page_templates_repaired_v1', 1 );
+    update_option( 'ab_page_templates_repaired_v2', 1 );
 }
 
 /**
