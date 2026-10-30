@@ -319,7 +319,19 @@ function ab_ensure_product_directory_pages() {
  */
 add_action( 'init', 'ab_ensure_bhavik_page', 31 );
 function ab_ensure_bhavik_page() {
-    if ( get_option( 'ab_bhavik_page_ready' ) ) { return; }
+    /*
+     * Self-heal pass. The "page ready" option can already be set from an older
+     * theme version, in which case the Bhavik page may exist without its page
+     * template — WordPress then falls back to page.php and shows no Bhavik
+     * layout at all. Re-check the stored template on every load.
+     */
+    $bhavik_page = get_page_by_path( 'bhavik-enterprises', OBJECT, 'page' );
+    if ( get_option( 'ab_bhavik_page_ready' ) ) {
+        if ( $bhavik_page ) {
+            ab_repair_page_template( $bhavik_page->ID, 'page-template/template-bhavik-enterprises.php' );
+        }
+        return;
+    }
 
     $defaults = require get_template_directory() . '/inc/default-content.php';
     $page_data = null;
@@ -358,6 +370,47 @@ function ab_ensure_bhavik_page() {
     if ( ! get_post_meta( $page_id, 'ab_page_faqs', true ) && ! empty( $page_data['faqs'] ) ) { update_post_meta( $page_id, 'ab_page_faqs', $page_data['faqs'] ); }
 
     update_option( 'ab_bhavik_page_ready', 1 );
+}
+
+/**
+ * Point a page at a page template when its stored `_wp_page_template` value is
+ * missing, or references a file that no longer exists in the theme (for example
+ * an old `page-templates/` path after the folder was renamed to `page-template/`).
+ * Pages that already point at a real template are left untouched.
+ */
+function ab_repair_page_template( $page_id, $desired = '' ) {
+    $theme_dir = get_template_directory();
+    $current   = (string) get_post_meta( $page_id, '_wp_page_template', true );
+
+    if ( '' !== $current && 'default' !== $current && file_exists( $theme_dir . '/' . $current ) ) {
+        return false;
+    }
+    if ( '' === $desired && '' !== $current && 'default' !== $current ) {
+        // Same file name, current folder.
+        $candidate = 'page-template/' . basename( $current );
+        if ( file_exists( $theme_dir . '/' . $candidate ) ) { $desired = $candidate; }
+    }
+    if ( '' === $desired || ! file_exists( $theme_dir . '/' . $desired ) ) { return false; }
+
+    update_post_meta( $page_id, '_wp_page_template', $desired );
+    return true;
+}
+
+/** One-time sweep that repairs stale page-template paths written by older builds. */
+add_action( 'init', 'ab_repair_stale_page_templates', 41 );
+function ab_repair_stale_page_templates() {
+    if ( get_option( 'ab_page_templates_repaired_v1' ) ) { return; }
+    $pages = get_posts( array(
+        'post_type'      => 'page',
+        'post_status'    => 'any',
+        'posts_per_page' => -1,
+        'fields'         => 'ids',
+        'no_found_rows'  => true,
+    ) );
+    foreach ( $pages as $page_id ) {
+        ab_repair_page_template( (int) $page_id );
+    }
+    update_option( 'ab_page_templates_repaired_v1', 1 );
 }
 
 /**
